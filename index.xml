@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>The Cyber Security Blog</title>
+    <link>https://dimparar.github.io/thecybersecurityblog/</link>
+    <description>Recent content on The Cyber Security Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2024 16:16:09 +0200</lastBuildDate>
+    <atom:link href="https://dimparar.github.io/thecybersecurityblog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/about/</link>
+      <pubDate>Mon, 11 Mar 2024 16:16:09 +0200</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/about/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Blog</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/blog/</link>
+      <pubDate>Mon, 11 Mar 2024 14:56:58 +0200</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/blog/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Test</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/docs/test/</link>
+      <pubDate>Mon, 11 Mar 2024 11:13:03 +0200</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/docs/test/</guid>
+      <description>This is a test page. Lorem ipsum</description>
+    </item>
+    <item>
+      <title></title>
+      <link>https://dimparar.github.io/thecybersecurityblog/home/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/home/</guid>
+      <description>Summary
+Posts
+Topics
+lorem ipsum
+Most Recent
+lorem ipsum
+Projects
+lorem ipsum ipsum</description>
+    </item>
+  </channel>
+</rss>
