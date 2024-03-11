@@ -1,0 +1,31 @@
+baseURL = 'https://dimparar.github.io/thecybersecurityblog/'
+languageCode = 'en-us'
+title = 'The Cyber Security Blog'
+theme = 'PaperMod'
+
+[menus]
+[[menus.main]]
+    identifier = 'home'
+    name = 'Home'
+    pageRef = '/home/'
+    weight = 10
+[[menus.main]]
+    identifier = 'blog'
+    name = 'Blog'
+    pageRef = '/blog/'
+    weight = 20
+[[menus.main]]
+    identifier = 'tags'
+    name = 'Tags'
+    pageRef = '/tags/'
+    weight = 30
+[[menus.main]]
+    identifier = 'about'
+    name = 'About'
+    pageRef = '/About/'
+    weight = 30
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

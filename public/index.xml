@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Cyber Security Blog</title>
+    <link>http://localhost:1313/thecybersecurityblog/</link>
+    <description>Recent content on The Cyber Security Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2024 16:16:09 +0200</lastBuildDate>
+    <atom:link href="http://localhost:1313/thecybersecurityblog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>http://localhost:1313/thecybersecurityblog/about/</link>
+      <pubDate>Mon, 11 Mar 2024 16:16:09 +0200</pubDate>
+      <guid>http://localhost:1313/thecybersecurityblog/about/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Blog</title>
+      <link>http://localhost:1313/thecybersecurityblog/blog/</link>
+      <pubDate>Mon, 11 Mar 2024 14:56:58 +0200</pubDate>
+      <guid>http://localhost:1313/thecybersecurityblog/blog/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Test</title>
+      <link>http://localhost:1313/thecybersecurityblog/docs/test/</link>
+      <pubDate>Mon, 11 Mar 2024 11:13:03 +0200</pubDate>
+      <guid>http://localhost:1313/thecybersecurityblog/docs/test/</guid>
+      <description>This is a test page. Lorem ipsum</description>
+    </item>
+    <item>
+      <title></title>
+      <link>http://localhost:1313/thecybersecurityblog/home/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/thecybersecurityblog/home/</guid>
+      <description>Summary&#xA;Posts&#xA;Topics&#xA;lorem ipsum&#xA;Most Recent&#xA;lorem ipsum&#xA;Projects&#xA;lorem ipsum ipsum</description>
+    </item>
+  </channel>
+</rss>
