@@ -2,22 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://dimparar.github.io/thecybersecurityblog/about/</loc>
-    <lastmod>2024-03-11T16:16:09+02:00</lastmod>
-  </url><url>
-    <loc>https://dimparar.github.io/thecybersecurityblog/</loc>
-    <lastmod>2024-03-11T16:16:09+02:00</lastmod>
-  </url><url>
-    <loc>https://dimparar.github.io/thecybersecurityblog/blog/</loc>
-    <lastmod>2024-03-11T14:56:58+02:00</lastmod>
-  </url><url>
     <loc>https://dimparar.github.io/thecybersecurityblog/docs/</loc>
     <lastmod>2024-03-11T11:13:03+02:00</lastmod>
   </url><url>
     <loc>https://dimparar.github.io/thecybersecurityblog/docs/test/</loc>
     <lastmod>2024-03-11T11:13:03+02:00</lastmod>
   </url><url>
-    <loc>https://dimparar.github.io/thecybersecurityblog/home/</loc>
+    <loc>https://dimparar.github.io/thecybersecurityblog/</loc>
+    <lastmod>2024-03-11T11:13:03+02:00</lastmod>
+  </url><url>
+    <loc>https://dimparar.github.io/thecybersecurityblog/about/</loc>
+  </url><url>
+    <loc>https://dimparar.github.io/thecybersecurityblog/blog/</loc>
   </url><url>
     <loc>https://dimparar.github.io/thecybersecurityblog/categories/</loc>
   </url><url>
