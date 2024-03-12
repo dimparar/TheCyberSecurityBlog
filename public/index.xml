@@ -6,14 +6,27 @@
     <description>Recent content on The Cyber Security Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Mar 2024 15:02:14 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 13 Mar 2024 01:23:32 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/thecybersecurityblog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Crackmes_challenges_17_reverse_crack</title>
+      <title>Bank CTF</title>
+      <link>http://localhost:1313/thecybersecurityblog/docs/bank_ctf/</link>
+      <pubDate>Wed, 13 Mar 2024 01:23:32 +0200</pubDate>
+      <guid>http://localhost:1313/thecybersecurityblog/docs/bank_ctf/</guid>
+      <description>Link:TryHackMe | Bank CTF
+service apache2 start -&amp;gt; start apache2 server
+service apache2 stop -&amp;gt; stop apache2 server
+wget -&amp;gt; download files from internet
+Web Crawler A web crawler, or spider, is a type of bot that is typically operated by search engines like Google and Bing. Their purpose is to index the content of websites all across the Internet so that those websites can appear in search engine results</description>
+    </item>
+    <item>
+      <title>Easy Password Reverse by Clyax</title>
       <link>http://localhost:1313/thecybersecurityblog/docs/crackmes_challenges_17_reverse_crack/</link>
       <pubDate>Tue, 12 Mar 2024 15:02:14 +0200</pubDate>
       <guid>http://localhost:1313/thecybersecurityblog/docs/crackmes_challenges_17_reverse_crack/</guid>
-      <description></description>
+      <description>Finding the Solution Walking through the exe in a dissassembler, we can find the main function.
+Near the end of the function you&amp;rsquo;ll see that the pass condition is a cmp [rsp+2C], edx. Lets keep this in mind as we disect the program.
+From the top, we can see what seems to be our username being stored into [rsp+30] from a call to fgets. This seems to be when we are prompted to enter our username.</description>
     </item>
     <item>
       <title>Test</title>

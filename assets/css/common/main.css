@@ -1,3 +1,10 @@
+* {
+    font-family: "JetBrains Mono",monospace;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+
 .main {
     position: relative;
     min-height: calc(100vh - var(--header-height) - var(--footer-height));
