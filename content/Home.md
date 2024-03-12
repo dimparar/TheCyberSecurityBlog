@@ -1,5 +1,7 @@
 +++
-url = '/home/'
+url = '/'
+layout = 'index'
+draft = true
 +++
 
 Summary

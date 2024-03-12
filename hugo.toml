@@ -7,7 +7,7 @@ theme = 'PaperMod'
 [[menus.main]]
     identifier = 'home'
     name = 'Home'
-    pageRef = '/home/'
+    pageRef = '/'
     weight = 10
 [[menus.main]]
     identifier = 'blog'
@@ -29,3 +29,6 @@ theme = 'PaperMod'
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+
+[params]
+    dateFormat = "02 Jan 2006"

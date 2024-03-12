@@ -1,0 +1,50 @@
+{{define "main"}}
+
+<style>
+    * {
+        font-family: "JetBrains Mono", monospace;
+        font-optical-sizing: auto;
+        font-weight: 100;
+        font-style: normal;
+        letter-spacing:0em;
+    }
+
+    .small-titles {
+        font-size: 1em;
+        font-weight: 400;
+        
+    }
+
+    .titles {
+        font-size: 1.4em;
+        font-weight: 400;
+    }
+
+    .entry {
+        display: flex;
+        justify-content: space-between;
+        width: 25%;
+    }
+
+</style>
+
+<div>
+    <br>
+    Summary
+    <br><br><br>
+    <span class="titles">Posts</span><br><br><br>
+    <span class="small-titles">Topics</span><br><br>
+    <span class="small-titles">Most recent</span><br><br>
+
+    {{ range .Paginator.Pages }}
+    <div>
+        {{ if .Params.showpage }}
+            <div class="entry">
+                {{ .Date.Format "2006-01-02" }} 
+                <a href="{{ .Permalink }}">{{ .Params.title }}</a>
+            </div>
+        {{ end }}
+    </div>
+    {{ end }}
+</div>
+{{ end }}
