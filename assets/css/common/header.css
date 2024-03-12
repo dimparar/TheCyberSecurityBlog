@@ -1,17 +1,10 @@
 .nav {
     display: flex;
-    /* flex-direction: column; */
     flex-wrap: nowrap;
     justify-content: space-evenly;
-    /* max-width: calc(var(--nav-width) + var(--gap) * 2); */
-    /* max-width: 100%; */
     line-height: auto;
     padding-top: 60px;
     justify-content: center;
-    /* padding-left: 200px; */
-    /* align-content: center; */
-    /* border: 2px solid green; */
-    margin: 20px;
 }
 
 .head-class {
@@ -19,7 +12,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding-right: 270px;
+    padding-right: 308px;
 }
 
 .nav a {

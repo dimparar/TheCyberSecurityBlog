@@ -25,10 +25,10 @@ h6 {
 }
 
 body {
-    font-family: "JetBrains Mono", monospace;
+    /* font-family: "JetBrains Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 100;
-    font-style: normal;
+    font-style: normal; */
     letter-spacing:0em;
     word-break: break-word;
     background: var(--theme);

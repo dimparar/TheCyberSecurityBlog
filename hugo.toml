@@ -3,6 +3,8 @@ languageCode = 'en-us'
 title = 'The Cyber Security Blog'
 theme = 'PaperMod'
 
+enableEmoji = true
+
 [menus]
 [[menus.main]]
     identifier = 'home'
