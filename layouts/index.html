@@ -7,6 +7,22 @@
         font-weight: 100;
         font-style: normal;
         letter-spacing:0em;
+        /* border: 2px solid red; */
+    }
+
+    .main-section {
+        display: flex;
+        flex-direction: column;
+        /* border: 2px solid red; */
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .content {
+        min-width:40em;
+        /* border: 2px solid green; */
+        margin: auto;
     }
 
     .small-titles {
@@ -21,30 +37,31 @@
     }
 
     .entry {
-        display: flex;
-        justify-content: space-between;
-        width: 25%;
+        padding-top: 8px;
+        text-align: left;
+        width: auto;
     }
 
 </style>
 
-<div>
-    <br>
-    Summary
-    <br><br><br>
-    <span class="titles">Posts</span><br><br><br>
-    <span class="small-titles">Topics</span><br><br>
-    <span class="small-titles">Most recent</span><br><br>
+<section class="main-section">
+    <div class="content">
+        Summary
+        <br><br><br>
+        <span class="titles">Posts</span><br><br><br>
+        <span class="small-titles">Topics</span><br><br><br>
+        <span class="small-titles">Most recent</span><br><br>
 
-    {{ range .Paginator.Pages }}
-    <div>
-        {{ if .Params.showpage }}
-            <div class="entry">
-                {{ .Date.Format "2006-01-02" }} 
-                <a href="{{ .Permalink }}">{{ .Params.title }}</a>
-            </div>
+        {{ range .Paginator.Pages }}
+        <div>
+            {{ if .Params.showpage }}
+                <div class="entry">
+                    {{ .Date.Format "2006-01-02" }} 
+                    <a href="{{ .Permalink }}">{{ .Params.title }}</a>
+                </div>
+            {{ end }}
+        </div>
         {{ end }}
     </div>
-    {{ end }}
-</div>
+</section>
 {{ end }}

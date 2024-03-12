@@ -23,7 +23,7 @@ theme = 'PaperMod'
     identifier = 'about'
     name = 'About'
     pageRef = '/About/'
-    weight = 30
+    weight = 40
 
 [markup]
   [markup.goldmark]

@@ -1,14 +1,25 @@
 .nav {
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    /* flex-direction: column; */
+    flex-wrap: nowrap;
     justify-content: space-evenly;
-    max-width: calc(var(--nav-width) + var(--gap) * 2);
-    margin-inline-start: auto;
-    margin-inline-end: auto;
+    /* max-width: calc(var(--nav-width) + var(--gap) * 2); */
+    /* max-width: 100%; */
     line-height: auto;
     padding-top: 60px;
-    align-content: center;
+    justify-content: center;
+    /* padding-left: 200px; */
+    /* align-content: center; */
+    /* border: 2px solid green; */
+    margin: 20px;
+}
+
+.head-class {
+    /* border: 2px solid red; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-right: 270px;
 }
 
 .nav a {
@@ -63,7 +74,7 @@ body:not(.dark) #sun {
 }
 
 #menu li + li {
-    margin-inline-start: 6px;
+    margin-inline-start: 8px;
 }
 
 #menu a {
