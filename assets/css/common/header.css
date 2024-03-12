@@ -1,6 +1,6 @@
 .nav {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: space-evenly;
     line-height: auto;
     padding-top: 60px;
