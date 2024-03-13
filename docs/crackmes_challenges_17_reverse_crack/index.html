@@ -5,12 +5,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Crackmes_challenges_17_reverse_crack | The Cyber Security Blog</title>
+<title>Easy Password Reverse by Clyax | The Cyber Security Blog</title>
 <meta name="keywords" content="">
-<meta name="description" content="Crackmes_challenges_17_reverse_crack - The Cyber Security Blog">
+<meta name="description" content="Finding the Solution Walking through the exe in a dissassembler, we can find the main function.
+Near the end of the function you&rsquo;ll see that the pass condition is a cmp [rsp&#43;2C], edx. Lets keep this in mind as we disect the program.
+From the top, we can see what seems to be our username being stored into [rsp&#43;30] from a call to fgets. This seems to be when we are prompted to enter our username.">
 <meta name="author" content="">
 <link rel="canonical" href="https://dimparar.github.io/thecybersecurityblog/docs/crackmes_challenges_17_reverse_crack/">
-<link crossorigin="anonymous" href="/thecybersecurityblog/assets/css/stylesheet.ced74a71348167bf68dea6eade14cb8a2b338d1906ba60db4a0a30f1df1e779d.css" integrity="sha256-ztdKcTSBZ79o3qbq3hTLiiszjRkGumDbSgow8d8ed50=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/thecybersecurityblog/assets/css/stylesheet.ebbd1d2455d4406b9ee8b1da18773ffdacc0c593ca3981f360b80083367e6b18.css" integrity="sha256-670dJFXUQGue6LHaGHc//azAxZPKOYHzYLgAgzZ&#43;axg=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://dimparar.github.io/thecybersecurityblog/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://dimparar.github.io/thecybersecurityblog/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://dimparar.github.io/thecybersecurityblog/favicon-32x32.png">
@@ -55,16 +57,20 @@
         }
 
     </style>
-</noscript><meta property="og:title" content="Crackmes_challenges_17_reverse_crack" />
-<meta property="og:description" content="" />
+</noscript><meta property="og:title" content="Easy Password Reverse by Clyax" />
+<meta property="og:description" content="Finding the Solution Walking through the exe in a dissassembler, we can find the main function.
+Near the end of the function you&rsquo;ll see that the pass condition is a cmp [rsp&#43;2C], edx. Lets keep this in mind as we disect the program.
+From the top, we can see what seems to be our username being stored into [rsp&#43;30] from a call to fgets. This seems to be when we are prompted to enter our username." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://dimparar.github.io/thecybersecurityblog/docs/crackmes_challenges_17_reverse_crack/" /><meta property="article:section" content="docs" />
 <meta property="article:published_time" content="2024-03-12T15:02:14+02:00" />
 <meta property="article:modified_time" content="2024-03-12T15:02:14+02:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Crackmes_challenges_17_reverse_crack"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="Easy Password Reverse by Clyax"/>
+<meta name="twitter:description" content="Finding the Solution Walking through the exe in a dissassembler, we can find the main function.
+Near the end of the function you&rsquo;ll see that the pass condition is a cmp [rsp&#43;2C], edx. Lets keep this in mind as we disect the program.
+From the top, we can see what seems to be our username being stored into [rsp&#43;30] from a call to fgets. This seems to be when we are prompted to enter our username."/>
 
 
 <script type="application/ld+json">
@@ -81,7 +87,7 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "Crackmes_challenges_17_reverse_crack",
+      "name": "Easy Password Reverse by Clyax",
       "item": "https://dimparar.github.io/thecybersecurityblog/docs/crackmes_challenges_17_reverse_crack/"
     }
   ]
@@ -91,14 +97,14 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Crackmes_challenges_17_reverse_crack",
-  "name": "Crackmes_challenges_17_reverse_crack",
-  "description": "",
+  "headline": "Easy Password Reverse by Clyax",
+  "name": "Easy Password Reverse by Clyax",
+  "description": "Finding the Solution Walking through the exe in a dissassembler, we can find the main function.\nNear the end of the function you\u0026rsquo;ll see that the pass condition is a cmp [rsp+2C], edx. Lets keep this in mind as we disect the program.\nFrom the top, we can see what seems to be our username being stored into [rsp+30] from a call to fgets. This seems to be when we are prompted to enter our username.",
   "keywords": [
     
   ],
-  "articleBody": "",
-  "wordCount" : "0",
+  "articleBody": "Finding the Solution Walking through the exe in a dissassembler, we can find the main function.\nNear the end of the function you’ll see that the pass condition is a cmp [rsp+2C], edx. Lets keep this in mind as we disect the program.\nFrom the top, we can see what seems to be our username being stored into [rsp+30] from a call to fgets. This seems to be when we are prompted to enter our username. Our username also seems to be loaded into rbx with the lea rbx, [rsp+30] call.\nFurther down we can see a printf call for our password, but its storage is a little odd. It makes a call to some function with the argument %u and the address of rsp+2C. Walking through this function it seems to be reading from stdin and storing the result into the passed pointer. But it only does so while the first argument (rcx) is satisfied. With this information, we can conclude that our password (rbp+2C, inferred from the pass condition) is not actually the text we input- but actually just the part of our password that is an unsigned int (%u). More specifically, up until our password is no longer an unsigned int. For example, if we input our password as 123a our actual password would be 123, but if we input 1a23 our actual password would be 1- not 123, as it would stop at the first unsigned int (a).\nFurther down we see a loop through a short jmp. The loop seems to be going until rax is equal to r8 (cmp rax, r8). Going up a bit, we can see where these are set:\nmov rcx, rbx call strlen xor edx, edx mov r8, rax mov rax, rbx add r8, rbx Recall that rbx contains our username. And seeing as rax contains the result from the strlen call- we can infer that r8 contains the length of our username (mov r8, rax). Although a bit further down (add r8, rbx) we see it adjusted by our username (or the address of our username)- meaning it now points to the character after our string (the null terminator).\nWe also see that rax is being made to point to our username (mov rax, rbx).\nWith this new infromation, we can conclude that the loop is progressing through each of the characters in our username:\nmovsx ecx, byte ptr [rax] add rax, 1 In doing so, it seems to be keeping a running total of the bytes add edx, ecx. Chars are technically just ASCII ints in memory, so it seems that edx is keeping a running total of the ASCII values of our username.\nAfter this loop completes, it lands on our original pass condition: cmp [rsp+2C], edx.\nWith our new-found knowledge, we now know that [rsp+2C] points to the count of unsigned ints in our password, and edx contains the total ASCII value of our username.\nSolution A password is the total ASCII value of the username. That is, the total of the ASCII equivilent value of each character in the username.\n",
+  "wordCount" : "515",
   "inLanguage": "en",
   "datePublished": "2024-03-12T15:02:14+02:00",
   "dateModified": "2024-03-12T15:02:14+02:00",
@@ -184,12 +190,56 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      Crackmes_challenges_17_reverse_crack
+      Easy Password Reverse by Clyax
     </h1>
     <div class="post-meta"><span title='2024-03-12 15:02:14 +0200 +0200'>12 Mar 2024</span>
 
 </div>
   </header> 
+  <div class="post-content"><h3 id="finding-the-solution">Finding the Solution<a hidden class="anchor" aria-hidden="true" href="#finding-the-solution">#</a></h3>
+<p>Walking through the <code>exe</code> in a dissassembler, we can find the main function.</p>
+<p>Near the end of the function you&rsquo;ll see that the pass condition is a <code>cmp [rsp+2C], edx</code>.
+Lets keep this in mind as we disect the program.</p>
+<p>From the top, we can see what seems to be our username being stored into <code>[rsp+30]</code> from a call to <code>fgets</code>.
+This seems to be when we are prompted to enter our username. Our username also seems to be loaded into <code>rbx</code> with the
+<code>lea rbx, [rsp+30]</code> call.</p>
+<p>Further down we can see a <code>printf</code> call for our password, but its storage is a little odd.
+It makes a call to some function with the argument <code>%u</code> and the address of <code>rsp+2C</code>.
+Walking through this function it seems to be reading from stdin and storing the result into the passed pointer.
+But it only does so while the first argument (<code>rcx</code>) is satisfied.
+With this information, we can conclude that our password (<code>rbp+2C</code>, inferred from the pass condition)
+is not actually the text we input- but actually just the part of our password that is an unsigned int (<code>%u</code>).
+More specifically, up <em>until</em> our password is no longer an unsigned int. For example, if we input our password as <code>123a</code>
+our actual password would be <code>123</code>, but if we input <code>1a23</code> our actual password would be <code>1</code>- not <code>123</code>, as
+it would stop at the first unsigned int (<code>a</code>).</p>
+<p>Further down we see a loop through a short <code>jmp</code>.
+The loop seems to be going until <code>rax</code> is equal to <code>r8</code> (<code>cmp rax, r8</code>).
+Going up a bit, we can see where these are set:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span>     <span style="color:#66d9ef">rcx</span>, <span style="color:#66d9ef">rbx</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">call</span>    <span style="color:#66d9ef">strlen</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">xor</span>     <span style="color:#66d9ef">edx</span>, <span style="color:#66d9ef">edx</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mov</span>     <span style="color:#66d9ef">r8</span>, <span style="color:#66d9ef">rax</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mov</span>     <span style="color:#66d9ef">rax</span>, <span style="color:#66d9ef">rbx</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">add</span>     <span style="color:#66d9ef">r8</span>, <span style="color:#66d9ef">rbx</span>
+</span></span></code></pre></div><p>Recall that <code>rbx</code> contains our username. And seeing as <code>rax</code> contains the result from the <code>strlen</code> call- we can infer
+that <code>r8</code> contains the length of our username (<code>mov r8, rax</code>). Although a bit further down (<code>add r8, rbx</code>) we see it
+adjusted by our username (or the address of our username)- meaning it now points to the character after our string
+(the null terminator).</p>
+<p>We also see that <code>rax</code> is being made to point to our username (<code>mov rax, rbx</code>).</p>
+<p>With this new infromation, we can conclude that the loop is progressing through each of the characters in
+our username:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">movsx</span> <span style="color:#66d9ef">ecx</span>, <span style="color:#66d9ef">byte</span> <span style="color:#66d9ef">ptr</span> [<span style="color:#66d9ef">rax</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">add</span> <span style="color:#66d9ef">rax</span>, <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>In doing so, it seems to be keeping a running total of the bytes <code>add edx, ecx</code>. Chars are technically just ASCII
+ints in memory, so it seems that <code>edx</code> is keeping a running total of the ASCII values of our username.</p>
+<p>After this loop completes, it lands on our original pass condition: <code>cmp [rsp+2C], edx</code>.</p>
+<p>With our new-found knowledge, we now know that <code>[rsp+2C]</code> points to the count of unsigned ints in our password,
+and <code>edx</code> contains the total ASCII value of our username.</p>
+<h2 id="solution">Solution<a hidden class="anchor" aria-hidden="true" href="#solution">#</a></h2>
+<p>A password is the total ASCII value of the username. That is, the total of the ASCII equivilent value of each character in the username.</p>
+
+
+  </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
