@@ -6,8 +6,31 @@
     <description>Recent content on The Cyber Security Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Mar 2024 01:23:32 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 07 Apr 2024 23:40:09 +0300</lastBuildDate>
     <atom:link href="https://dimparar.github.io/thecybersecurityblog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resources</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/docs/resources/</link>
+      <pubDate>Sun, 07 Apr 2024 23:40:09 +0300</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/docs/resources/</guid>
+      <description>HTTPS Encryption &amp;amp; Remote Banking Authentication Attacks This article discusses the secure HTTPS Protocol intended for web-resources and its principles of operation as well as its strengths and weaknesses. It explains how attacks on HTTPS may lead to traffic being decrypted, particularly in systems for remote banking services and personal logins to web-resources.
+Web resources, such as remote banking services, web portals for private offices, e-mail, instant messaging and VoIP-telephony require protocols for secure data exchange.</description>
+    </item>
+    <item>
+      <title>Crackmes.one Challenges</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/docs/crackmes-challenges/</link>
+      <pubDate>Wed, 13 Mar 2024 22:10:50 +0200</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/docs/crackmes-challenges/</guid>
+      <description> Challenge Difficulty Quality Link sporta778&#39;s Bobby 2.0 5.0 here </description>
+    </item>
+    <item>
+      <title>Hack a TP-Link Router by Flashback Team</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/docs/tp-link-router-hack/</link>
+      <pubDate>Wed, 13 Mar 2024 22:10:50 +0200</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/docs/tp-link-router-hack/</guid>
+      <description>Why do electrical sockets need a pin for &amp;ldquo;grounding&amp;rdquo;
+Search for debug interface (eg. UART) </description>
+    </item>
     <item>
       <title>Bank CTF</title>
       <link>https://dimparar.github.io/thecybersecurityblog/docs/bank_ctf/</link>
