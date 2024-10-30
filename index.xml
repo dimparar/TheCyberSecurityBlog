@@ -6,8 +6,18 @@
     <description>Recent content on The Cyber Security Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 07 Apr 2024 23:40:09 +0300</lastBuildDate>
+    <lastBuildDate>Tue, 29 Oct 2024 22:01:23 +0200</lastBuildDate>
     <atom:link href="https://dimparar.github.io/thecybersecurityblog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PortSwigger Labs</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/</link>
+      <pubDate>Tue, 29 Oct 2024 22:01:23 +0200</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/</guid>
+      <description>Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
+Go to &amp;ldquo;My account&amp;rdquo; and log in with the given credentials Username: wiener
+Password: peter
+After logging in, we get redirected to &amp;ldquo;My account&amp;rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server.</description>
+    </item>
     <item>
       <title>Resources</title>
       <link>https://dimparar.github.io/thecybersecurityblog/docs/resources/</link>

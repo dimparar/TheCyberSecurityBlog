@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>PortSwigger Labs | The Cyber Security Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
+Go to &ldquo;My account&rdquo; and log in with the given credentials Username: wiener
+Password: peter
+After logging in, we get redirected to &ldquo;My account&rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server.">
+<meta name="author" content="">
+<link rel="canonical" href="https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/">
+<link crossorigin="anonymous" href="/thecybersecurityblog/assets/css/stylesheet.ee2e7b2288da60c6a721df6a8dd227b93eeb71f6bb8216dcb451584138dc0610.css" integrity="sha256-7i57IojaYManId9qjdInuT7rcfa7ghbctFFYQTjcBhA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://dimparar.github.io/thecybersecurityblog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://dimparar.github.io/thecybersecurityblog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://dimparar.github.io/thecybersecurityblog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://dimparar.github.io/thecybersecurityblog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://dimparar.github.io/thecybersecurityblog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="PortSwigger Labs" />
+<meta property="og:description" content="Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
+Go to &ldquo;My account&rdquo; and log in with the given credentials Username: wiener
+Password: peter
+After logging in, we get redirected to &ldquo;My account&rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2024-10-29T22:01:23+02:00" />
+<meta property="article:modified_time" content="2024-10-29T22:01:23+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PortSwigger Labs"/>
+<meta name="twitter:description" content="Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
+Go to &ldquo;My account&rdquo; and log in with the given credentials Username: wiener
+Password: peter
+After logging in, we get redirected to &ldquo;My account&rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Docs",
+      "item": "https://dimparar.github.io/thecybersecurityblog/docs/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "PortSwigger Labs",
+      "item": "https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PortSwigger Labs",
+  "name": "PortSwigger Labs",
+  "description": "Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.\nGo to \u0026ldquo;My account\u0026rdquo; and log in with the given credentials Username: wiener\nPassword: peter\nAfter logging in, we get redirected to \u0026ldquo;My account\u0026rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server.",
+  "keywords": [
+    
+  ],
+  "articleBody": " Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.\nGo to “My account” and log in with the given credentials Username: wiener\nPassword: peter\nAfter logging in, we get redirected to “My account” page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server. For this cause we will use BurpSuite to analyze the POST request and response from the server.\nBy uploading a normal .jpeg file we are commanding a POST request: Notice the Content-Type: multipart/form-data;. This means that for each input of the form we have seperate Content-Disposision and Content-Type headers.\nIf we try any file, other than .jpeg and .png, an error message is returned as response. So the server checks somehow the file we upload and its extension to make sure that it is an image.\nThere is a possibility that the server in order to read the extension of the file provided, uses the Content-Type header. In this case we could easily bypass this validation by keeping the Content-Type: image/jpeg and changing the file data into a php webshell that can give us Remote Command Execution (RCE).\nLet’s give it a try! Send the POST request to the Repeater and insert the payload like this: Send the request. The avatar picture was changed successfully!\nNow let’s refresh the “My account” page and then press Ctrl+U to open the source code. Open the avatar photo in order to run the webshell.php. Then add to the URL ?cmd=cat+/home/carlos/secret.\nSubmit the code and voilla!\nLab: File path traversal, simple case Open the website along with BurpSuite Proxy to inspect the requests to the server. At the home page there are products for sale (Title, Image, Small Description).\nThe image is probably stored locally at the server, so we should check if it vulnerable at path traversal attacks.\nWhen we select a product we can see from BurpSuite Proxy the request GET /product?productId=1, with each product having each own ProductId. After this request there is another one, this time GET /image?filename=53.jpg for the image of the product.\nLet’s check if the second request is vulnerable to path traversal attacks. Change the request with BurpSuite Repeater to\nGET /image?filename=../../../etc/passwd Success! The response contains the data from /etc/passwd.\n",
+  "wordCount" : "396",
+  "inLanguage": "en",
+  "datePublished": "2024-10-29T22:01:23+02:00",
+  "dateModified": "2024-10-29T22:01:23+02:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The Cyber Security Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://dimparar.github.io/thecybersecurityblog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+    <nav class="nav">
+        <div class="head-class">
+            <div class="logo">
+                <a href="https://dimparar.github.io/thecybersecurityblog/" accesskey="h" title="The Cyber Security Blog (Alt + H)">The Cyber Security Blog</a>
+                
+            </div>
+            <ul id="menu">
+                
+                <li>
+                    <a href="https://dimparar.github.io/thecybersecurityblog/" title="Home">
+                        <span>Home</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="https://dimparar.github.io/thecybersecurityblog/blog/" title="Blog">
+                        <span>Blog</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="https://dimparar.github.io/thecybersecurityblog/tags/" title="Tags">
+                        <span>Tags</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="https://dimparar.github.io/thecybersecurityblog/about/" title="About">
+                        <span>About</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      PortSwigger Labs
+    </h1>
+    <div class="post-meta"><span title='2024-10-29 22:01:23 +0200 +0200'>29 Oct 2024</span>
+
+</div>
+  </header> 
+  <div class="post-content"><hr>
+<h4 style="font-size:20px;font-weight: bold">
+    Lab: Web shell upload via Content-Type restriction bypass
+</h4>
+<br>
+<p>In this lab we have to exploit an upload vulnerability.</p>
+<p>Go to &ldquo;My account&rdquo; and log in with the given credentials <br></p>
+<p>Username: wiener<br>
+Password: peter</p>
+<p>After logging in, we get redirected to &ldquo;My account&rdquo; page where there is an input box to upload our Avatar photo. <br>
+<img loading="lazy" src="lab1.png" alt="myaccount"  />
+
+We want to check if there is any upload vulnerability we can exploit to get access to the server. For this cause we will use BurpSuite to analyze the POST request and response from the server.</p>
+<p>By uploading a normal <code>.jpeg</code> file we are commanding a POST request:
+<img loading="lazy" src="lab2.png" alt="post_request"  />
+</p>
+<p>Notice the <code>Content-Type: multipart/form-data;</code>. This means that for each input of the form we have seperate <code>Content-Disposision</code> and <code>Content-Type</code> headers.</p>
+<p>If we try any file, other than <code>.jpeg</code> and <code>.png</code>, an error message is returned as response. So the server checks somehow the file we upload and its extension to make sure that it is an image.</p>
+<p>There is a possibility that the server in order to read the extension of the file provided, uses the <code>Content-Type</code> header. In this case we could easily bypass this validation by keeping the <code>Content-Type: image/jpeg</code> and changing the file data into a php webshell that can give us Remote Command Execution (RCE).</p>
+<p>Let&rsquo;s give it a try! Send the POST request to the Repeater and insert the payload like this:
+<img loading="lazy" src="lab3.png" alt="payload"  />
+
+Send the request. The avatar picture was changed successfully!</p>
+<p>Now let&rsquo;s refresh the &ldquo;My account&rdquo; page and then press <code>Ctrl+U</code> to open the source code. Open the avatar photo in order to run the <code>webshell.php</code>. Then add to the URL <code>?cmd=cat+/home/carlos/secret</code>.</p>
+<p>Submit the code and voilla!</p>
+<hr>
+<h4 style="font-size:20px;font-weight: bold">
+    Lab: File path traversal, simple case
+</h4>
+<br>
+<p>Open the website along with BurpSuite Proxy to inspect the requests to the server. At the home page there are products for sale (Title, Image, Small Description).</p>
+<p>The image is probably stored locally at the server, so we should check if it vulnerable at path traversal attacks.</p>
+<p>When we select a product we can see from BurpSuite Proxy the request <code>GET /product?productId=1</code>, with each product having each own ProductId. After this request there is another one, this time <code>GET /image?filename=53.jpg</code> for the image of the product.</p>
+<p>Let&rsquo;s check if the second request is vulnerable to path traversal attacks.
+Change the request with BurpSuite Repeater to</p>
+<pre tabindex="0"><code>GET /image?filename=../../../etc/passwd
+</code></pre><p><img loading="lazy" src="lab4.png" alt="alt"  />
+
+Success! The response contains the data from <code>/etc/passwd</code>.</p>
+<hr>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://dimparar.github.io/thecybersecurityblog/">The Cyber Security Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
