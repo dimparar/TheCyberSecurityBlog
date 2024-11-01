@@ -32,6 +32,10 @@ enableEmoji = true
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+  [markup.tableOfContents]
+    startLevel = 3
+    endLevel = 5
+    ordered = false
 
 [params]
     dateFormat = "02 Jan 2006"
