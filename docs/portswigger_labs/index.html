@@ -7,13 +7,13 @@
 <meta name="robots" content="index, follow">
 <title>PortSwigger Labs | The Cyber Security Blog</title>
 <meta name="keywords" content="">
-<meta name="description" content="Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
+<meta name="description" content="Introduction Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
 Go to &ldquo;My account&rdquo; and log in with the given credentials Username: wiener
 Password: peter
 After logging in, we get redirected to &ldquo;My account&rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server.">
 <meta name="author" content="">
 <link rel="canonical" href="https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/">
-<link crossorigin="anonymous" href="/thecybersecurityblog/assets/css/stylesheet.ee2e7b2288da60c6a721df6a8dd227b93eeb71f6bb8216dcb451584138dc0610.css" integrity="sha256-7i57IojaYManId9qjdInuT7rcfa7ghbctFFYQTjcBhA=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/thecybersecurityblog/assets/css/stylesheet.d9b1e26c63e90826aeb8962291325079e8eb085c2e85ed7834f2dee298d404cd.css" integrity="sha256-2bHibGPpCCauuJYikTJQeejrCFwuhe14NPLe4pjUBM0=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://dimparar.github.io/thecybersecurityblog/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://dimparar.github.io/thecybersecurityblog/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://dimparar.github.io/thecybersecurityblog/favicon-32x32.png">
@@ -59,7 +59,7 @@ After logging in, we get redirected to &ldquo;My account&rdquo; page where there
 
     </style>
 </noscript><meta property="og:title" content="PortSwigger Labs" />
-<meta property="og:description" content="Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
+<meta property="og:description" content="Introduction Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
 Go to &ldquo;My account&rdquo; and log in with the given credentials Username: wiener
 Password: peter
 After logging in, we get redirected to &ldquo;My account&rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server." />
@@ -70,7 +70,7 @@ After logging in, we get redirected to &ldquo;My account&rdquo; page where there
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="PortSwigger Labs"/>
-<meta name="twitter:description" content="Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
+<meta name="twitter:description" content="Introduction Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
 Go to &ldquo;My account&rdquo; and log in with the given credentials Username: wiener
 Password: peter
 After logging in, we get redirected to &ldquo;My account&rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server."/>
@@ -102,12 +102,12 @@ After logging in, we get redirected to &ldquo;My account&rdquo; page where there
   "@type": "BlogPosting",
   "headline": "PortSwigger Labs",
   "name": "PortSwigger Labs",
-  "description": "Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.\nGo to \u0026ldquo;My account\u0026rdquo; and log in with the given credentials Username: wiener\nPassword: peter\nAfter logging in, we get redirected to \u0026ldquo;My account\u0026rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server.",
+  "description": "Introduction Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.\nGo to \u0026ldquo;My account\u0026rdquo; and log in with the given credentials Username: wiener\nPassword: peter\nAfter logging in, we get redirected to \u0026ldquo;My account\u0026rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server.",
   "keywords": [
     
   ],
-  "articleBody": " Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.\nGo to “My account” and log in with the given credentials Username: wiener\nPassword: peter\nAfter logging in, we get redirected to “My account” page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server. For this cause we will use BurpSuite to analyze the POST request and response from the server.\nBy uploading a normal .jpeg file we are commanding a POST request: Notice the Content-Type: multipart/form-data;. This means that for each input of the form we have seperate Content-Disposision and Content-Type headers.\nIf we try any file, other than .jpeg and .png, an error message is returned as response. So the server checks somehow the file we upload and its extension to make sure that it is an image.\nThere is a possibility that the server in order to read the extension of the file provided, uses the Content-Type header. In this case we could easily bypass this validation by keeping the Content-Type: image/jpeg and changing the file data into a php webshell that can give us Remote Command Execution (RCE).\nLet’s give it a try! Send the POST request to the Repeater and insert the payload like this: Send the request. The avatar picture was changed successfully!\nNow let’s refresh the “My account” page and then press Ctrl+U to open the source code. Open the avatar photo in order to run the webshell.php. Then add to the URL ?cmd=cat+/home/carlos/secret.\nSubmit the code and voilla!\nLab: File path traversal, simple case Open the website along with BurpSuite Proxy to inspect the requests to the server. At the home page there are products for sale (Title, Image, Small Description).\nThe image is probably stored locally at the server, so we should check if it vulnerable at path traversal attacks.\nWhen we select a product we can see from BurpSuite Proxy the request GET /product?productId=1, with each product having each own ProductId. After this request there is another one, this time GET /image?filename=53.jpg for the image of the product.\nLet’s check if the second request is vulnerable to path traversal attacks. Change the request with BurpSuite Repeater to\nGET /image?filename=../../../etc/passwd Success! The response contains the data from /etc/passwd.\n",
-  "wordCount" : "396",
+  "articleBody": " Introduction Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.\nGo to “My account” and log in with the given credentials Username: wiener\nPassword: peter\nAfter logging in, we get redirected to “My account” page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server. For this cause we will use BurpSuite to analyze the POST request and response from the server.\nBy uploading a normal .jpeg file we are commanding a POST request: Notice the Content-Type: multipart/form-data;. This means that for each input of the form we have seperate Content-Disposision and Content-Type headers.\nIf we try any file, other than .jpeg and .png, an error message is returned as response. So the server checks somehow the file we upload and its extension to make sure that it is an image.\nThere is a possibility that the server in order to read the extension of the file provided, uses the Content-Type header. In this case we could easily bypass this validation by keeping the Content-Type: image/jpeg and changing the file data into a php webshell that can give us Remote Command Execution (RCE).\nLet’s give it a try! Send the POST request to the Repeater and insert the payload like this: Send the request. The avatar picture was changed successfully!\nNow let’s refresh the “My account” page and then press Ctrl+U to open the source code. Open the avatar photo in order to run the webshell.php. Then add to the URL ?cmd=cat+/home/carlos/secret.\nSubmit the code and voilla!\nLab: File path traversal, simple case Open the website along with BurpSuite Proxy to inspect the requests to the server. At the home page there are products for sale (Title, Image, Small Description).\nThe image is probably stored locally at the server, so we should check if it vulnerable at path traversal attacks.\nWhen we select a product we can see from BurpSuite Proxy the request GET /product?productId=1, with each product having each own ProductId. After this request there is another one, this time GET /image?filename=53.jpg for the image of the product.\nLet’s check if the second request is vulnerable to path traversal attacks. Change the request with BurpSuite Repeater to\nGET /image?filename=../../../etc/passwd Success! The response contains the data from /etc/passwd.\nLab: File path traversal, traversal sequences blocked with absolute path bypass Open the website along with BurpSuite Proxy to inspect the requests to the server. At the home page there are products for sale (Title, Image, Small Description).\nThe image is probably stored locally at the server, so we should check if it vulnerable at path traversal attacks.\nWhen we select a product we can see from BurpSuite Proxy the request GET /product?productId=1, with each product having each own ProductId. After this request there is another one, this time GET /image?filename=53.jpg for the image of the product.\nUsually all static content of a website is stored in a path like var/www/images at the server, so we want to exit this folder. If there is no validation or check then ../../../etc/passwd should work.\nUnfortunately, it’s not working. Maybe the server treats the path given to filename parameter as an absolute path, so let’s try giving /etc/passwd. Perfect, it just printed the /etc/passwd file contents in the reponse section of BurpSuite Repeater.\nNote: Try giving the absolute path of the file.\nLab: File path traversal, traversal sequences stripped non-recursively Same as before, open BurpSuite Proxy and send to Repeater the request GET /image?filename=53.jpg. This request is been commanded by the browser to load the image 53.jpg which is stored in the server. Let’s try some path traversal attacks.\n# First try to exit var/www/images ../../../etc/passwd #Nope # Now try Absolute Path /etc/passwd #No Luck # Server may have specific defences against path traversal attacks # like removing suspicious characters (../) ....//....//....//etc/passwd #Success Even though the server removes all ../ characters, the remaining path is exactly what we want ../../../etc/passwd.\nLab: File path traversal, traversal sequences stripped with superfluous URL-decode Same as before, open BurpSuite Proxy and send to Repeater the request GET /image?filename=53.jpg. This request is been commanded by the browser to load the image 53.jpg which is stored in the server. Let’s try some path traversal attacks.\n# First try to exit var/www/images ../../../etc/passwd #Nope # Now try Absolute Path /etc/passwd #Nope # Server may have specific defences against path traversal attacks # like removing suspicious characters (../) ....//....//....//etc/passwd #Nope # Use of URL Encoding # %2e = . # %2f = / %2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd #Nope # Double URL Encoding # %25 = % %252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252Fpasswd #Success So in order to exploit this vulnearbility we need to encode our path traversal payload to Double URL Encoding.\nLab: File path traversal, validation of start of path Same as before, open BurpSuite Proxy and send to Repeater the request GET /image?filename=53.jpg. This request is been commanded by the browser to load the image 53.jpg which is stored in the server. Let’s try some path traversal attacks.\n# First try to exit var/www/images ../../../etc/passwd #Nope # Now try Absolute Path /etc/passwd #Nope # Server may have specific defences against path traversal attacks # like removing suspicious characters (../) ....//....//....//etc/passwd #Nope # Use of URL Encoding # %2e = . # %2f = / %2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd #Nope # Double URL Encoding # %25 = % %252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252Fpasswd #Nothing # Server could take the absolute path and validate the base URL # For example here the absolute path is /var/www/images/53.jpg # and the base URL is /var/www/images /var/www/images/../../../etc/passwd #Success Lab: File path traversal, validation of file extension with null byte bypass Same as before, open BurpSuite Proxy and send to Repeater the request GET /image?filename=53.jpg. This request is been commanded by the browser to load the image 53.jpg which is stored in the server. Let’s try some path traversal attacks.\nThe methods from the other labs don’t apply here. Maybe the server checks the extention of the file, so let’s try to use NULL character to end the line before the .jpg to bypass the check. We need to use the URL encoded value %00.\n../../../etc.passwd%00.jpg Lab: Web shell upload via path traversal Go to “My account” and log in with the given credentials Username: wiener\nPassword: peter\nAfter logging in, we get redirected to “My account” page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server. For this cause we will use BurpSuite to analyze the POST request and response from the server.\nLet’s try to upload a webshell.php file (keep Content-Type: image/jpeg) in case the server uses it to identify the file extension. The response is Refresh the page and press Ctrl+U for the source code of the “My account” page. The path of the file we uploaded is If go to this path, we get our payload printed to the screen without being executed. So we need to find a workaround to execute this file. The server problably has permitted executing files from the specific folder /files/avatars as a defensive mechanism.\nIf we send request with filename=\"../webshell.php\", we get as response The file avatars/webshell.php has been uploaded.. Notice that the path hasn’t change regardless of ../, so it problably filters the path ignoring parts that could lead to a path traversal attack.\nThere are many payloads we can use, other than just typing ../. For example, let’s try URL encoding %2e%2e%2fwebshell.php (equal to ../webshell.php). As we can see now the response uploaded the file to /avatars/../webshell.php.\nBy opening the link we get a Not Found page. The URL is web-security-academy.net/files/avatars/..%2fwebshell.php, but if we remove ..%2f then we will go to the path that we uploaded the file web-security-academy.net/files/avatars/webshell.php. It loads. Now let’s see if the webshell works.\nweb-security-academy.net/files/avatars/webshell.php?cmd=cat+/home/carlos/secret\nSucess! We got the flag.\n",
+  "wordCount" : "1324",
   "inLanguage": "en",
   "datePublished": "2024-10-29T22:01:23+02:00",
   "dateModified": "2024-10-29T22:01:23+02:00",
@@ -190,6 +190,7 @@ After logging in, we get redirected to &ldquo;My account&rdquo; page where there
 <main class="main">
 
 <article class="post-single">
+
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
@@ -200,9 +201,8 @@ After logging in, we get redirected to &ldquo;My account&rdquo; page where there
 </div>
   </header> 
   <div class="post-content"><hr>
-<h4 style="font-size:20px;font-weight: bold">
-    Lab: Web shell upload via Content-Type restriction bypass
-</h4>
+<h3 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h3>
+<h3 id="lab-web-shell-upload-via-content-type-restriction-bypass">Lab: Web shell upload via Content-Type restriction bypass<a hidden class="anchor" aria-hidden="true" href="#lab-web-shell-upload-via-content-type-restriction-bypass">#</a></h3>
 <br>
 <p>In this lab we have to exploit an upload vulnerability.</p>
 <p>Go to &ldquo;My account&rdquo; and log in with the given credentials <br></p>
@@ -225,9 +225,7 @@ Send the request. The avatar picture was changed successfully!</p>
 <p>Now let&rsquo;s refresh the &ldquo;My account&rdquo; page and then press <code>Ctrl+U</code> to open the source code. Open the avatar photo in order to run the <code>webshell.php</code>. Then add to the URL <code>?cmd=cat+/home/carlos/secret</code>.</p>
 <p>Submit the code and voilla!</p>
 <hr>
-<h4 style="font-size:20px;font-weight: bold">
-    Lab: File path traversal, simple case
-</h4>
+<h3 id="lab-file-path-traversal-simple-case">Lab: File path traversal, simple case<a hidden class="anchor" aria-hidden="true" href="#lab-file-path-traversal-simple-case">#</a></h3>
 <br>
 <p>Open the website along with BurpSuite Proxy to inspect the requests to the server. At the home page there are products for sale (Title, Image, Small Description).</p>
 <p>The image is probably stored locally at the server, so we should check if it vulnerable at path traversal attacks.</p>
@@ -235,9 +233,124 @@ Send the request. The avatar picture was changed successfully!</p>
 <p>Let&rsquo;s check if the second request is vulnerable to path traversal attacks.
 Change the request with BurpSuite Repeater to</p>
 <pre tabindex="0"><code>GET /image?filename=../../../etc/passwd
-</code></pre><p><img loading="lazy" src="lab4.png" alt="alt"  />
+</code></pre><p><img loading="lazy" src="lab4.png" alt="traversal_attack"  />
 
 Success! The response contains the data from <code>/etc/passwd</code>.</p>
+<hr>
+<h3 id="lab-file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass">Lab: File path traversal, traversal sequences blocked with absolute path bypass<a hidden class="anchor" aria-hidden="true" href="#lab-file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass">#</a></h3>
+<br>
+<p>Open the website along with BurpSuite Proxy to inspect the requests to the server. At the home page there are products for sale (Title, Image, Small Description).</p>
+<p>The image is probably stored locally at the server, so we should check if it vulnerable at path traversal attacks.</p>
+<p>When we select a product we can see from BurpSuite Proxy the request <code>GET /product?productId=1</code>, with each product having each own ProductId. After this request there is another one, this time <code>GET /image?filename=53.jpg</code> for the image of the product.</p>
+<p>Usually all static content of a website is stored in a path like <code>var/www/images</code> at the server, so we want to exit this folder. If there is no validation or check then <code>../../../etc/passwd</code> should work.</p>
+<p>Unfortunately, it&rsquo;s not working. Maybe the server treats the path given to <code>filename</code> parameter as an absolute path, so let&rsquo;s try giving <code>/etc/passwd</code>. Perfect, it just printed the <code>/etc/passwd</code> file contents in the reponse section of BurpSuite Repeater.</p>
+<p><img loading="lazy" src="lab5.png" alt="attack"  />
+</p>
+<p>Note: Try giving the absolute path of the file.</p>
+<hr>
+<h3 id="lab-file-path-traversal-traversal-sequences-stripped-non-recursively">Lab: File path traversal, traversal sequences stripped non-recursively<a hidden class="anchor" aria-hidden="true" href="#lab-file-path-traversal-traversal-sequences-stripped-non-recursively">#</a></h3>
+<br>
+<p>Same as before, open BurpSuite Proxy and send to Repeater the request <code>GET /image?filename=53.jpg</code>. This request is been commanded by the browser to load the image <code>53.jpg</code> which is stored in the server. Let&rsquo;s try some path traversal attacks.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># First try to exit var/www/images</span>
+</span></span><span style="display:flex;"><span>../../../etc/passwd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Now try Absolute Path</span>
+</span></span><span style="display:flex;"><span>/etc/passwd <span style="color:#75715e">#No Luck</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Server may have specific defences against path traversal attacks</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># like removing suspicious characters (../)</span>
+</span></span><span style="display:flex;"><span>....//....//....//etc/passwd <span style="color:#75715e">#Success</span>
+</span></span></code></pre></div><p><img loading="lazy" src="lab6.png" alt="attack"  />
+</p>
+<p>Even though the server removes all <code>../</code> characters, the remaining path is exactly what we want <code>../../../etc/passwd</code>.</p>
+<hr>
+<h3 id="lab-file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode">Lab: File path traversal, traversal sequences stripped with superfluous URL-decode<a hidden class="anchor" aria-hidden="true" href="#lab-file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode">#</a></h3>
+<br>
+<p>Same as before, open BurpSuite Proxy and send to Repeater the request <code>GET /image?filename=53.jpg</code>. This request is been commanded by the browser to load the image <code>53.jpg</code> which is stored in the server. Let&rsquo;s try some path traversal attacks.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># First try to exit var/www/images</span>
+</span></span><span style="display:flex;"><span>../../../etc/passwd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Now try Absolute Path</span>
+</span></span><span style="display:flex;"><span>/etc/passwd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Server may have specific defences against path traversal attacks</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># like removing suspicious characters (../)</span>
+</span></span><span style="display:flex;"><span>....//....//....//etc/passwd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use of URL Encoding</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># %2e = .</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># %2f = /</span>
+</span></span><span style="display:flex;"><span>%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Double URL Encoding</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># %25 = %</span>
+</span></span><span style="display:flex;"><span>%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252Fpasswd <span style="color:#75715e">#Success</span>
+</span></span></code></pre></div><p><img loading="lazy" src="lab7.png" alt="attack"  />
+</p>
+<p>So in order to exploit this vulnearbility we need to encode our path traversal payload to Double URL Encoding.</p>
+<hr>
+<h3 id="lab-file-path-traversal-validation-of-start-of-path">Lab: File path traversal, validation of start of path<a hidden class="anchor" aria-hidden="true" href="#lab-file-path-traversal-validation-of-start-of-path">#</a></h3>
+<br>
+<p>Same as before, open BurpSuite Proxy and send to Repeater the request <code>GET /image?filename=53.jpg</code>. This request is been commanded by the browser to load the image <code>53.jpg</code> which is stored in the server. Let&rsquo;s try some path traversal attacks.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># First try to exit var/www/images</span>
+</span></span><span style="display:flex;"><span>../../../etc/passwd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Now try Absolute Path</span>
+</span></span><span style="display:flex;"><span>/etc/passwd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Server may have specific defences against path traversal attacks</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># like removing suspicious characters (../)</span>
+</span></span><span style="display:flex;"><span>....//....//....//etc/passwd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use of URL Encoding</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># %2e = .</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># %2f = /</span>
+</span></span><span style="display:flex;"><span>%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd <span style="color:#75715e">#Nope</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Double URL Encoding</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># %25 = %</span>
+</span></span><span style="display:flex;"><span>%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252Fpasswd <span style="color:#75715e">#Nothing</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Server could take the absolute path and validate the base URL</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># For example here the absolute path is /var/www/images/53.jpg</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># and the base URL is /var/www/images</span>
+</span></span><span style="display:flex;"><span>/var/www/images/../../../etc/passwd <span style="color:#75715e">#Success</span>
+</span></span></code></pre></div><p><img loading="lazy" src="lab8.png" alt="attack"  />
+</p>
+<hr>
+<h3 id="lab-file-path-traversal-validation-of-file-extension-with-null-byte-bypass">Lab: File path traversal, validation of file extension with null byte bypass<a hidden class="anchor" aria-hidden="true" href="#lab-file-path-traversal-validation-of-file-extension-with-null-byte-bypass">#</a></h3>
+<br>
+<p>Same as before, open BurpSuite Proxy and send to Repeater the request <code>GET /image?filename=53.jpg</code>. This request is been commanded by the browser to load the image <code>53.jpg</code> which is stored in the server. Let&rsquo;s try some path traversal attacks.</p>
+<p>The methods from the other labs don&rsquo;t apply here. Maybe the server checks the extention of the file, so let&rsquo;s try to use <code>NULL</code> character to end the line before the <code>.jpg</code> to bypass the check. We need to use the URL encoded value <code>%00</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>../../../etc.passwd%00.jpg
+</span></span></code></pre></div><p><img loading="lazy" src="lab9.png" alt="attack"  />
+</p>
+<hr>
+<h3 id="lab-web-shell-upload-via-path-traversal">Lab: Web shell upload via path traversal<a hidden class="anchor" aria-hidden="true" href="#lab-web-shell-upload-via-path-traversal">#</a></h3>
+<br>
+<p>Go to &ldquo;My account&rdquo; and log in with the given credentials <br></p>
+<p>Username: wiener<br>
+Password: peter</p>
+<p>After logging in, we get redirected to &ldquo;My account&rdquo; page where there is an input box to upload our Avatar photo. <br></p>
+<p>We want to check if there is any upload vulnerability we can exploit to get access to the server. For this cause we will use BurpSuite to analyze the POST request and response from the server.</p>
+<p>Let&rsquo;s try to upload a <code>webshell.php</code> file (keep <code>Content-Type: image/jpeg</code>) in case the server uses it to identify the file extension.
+<img loading="lazy" src="lab10.png" alt="attack"  />
+</p>
+<p>The response is
+<img loading="lazy" src="lab11.png" alt="attack_response"  />
+</p>
+<p>Refresh the page and press <code>Ctrl+U</code> for the source code of the &ldquo;My account&rdquo; page. The path of the file we uploaded is
+<img loading="lazy" src="lab12.png" alt="path"  />
+</p>
+<p>If go to this path, we get our payload printed to the screen without being executed. So we need to find a workaround to execute this file. The server problably has permitted executing files from the specific folder <code>/files/avatars</code> as a defensive mechanism.</p>
+<p>If we send request with <code>filename=&quot;../webshell.php&quot;</code>, we get as response <code>The file avatars/webshell.php has been uploaded.</code>. Notice that the path hasn&rsquo;t change regardless of <code>../</code>, so it problably filters the path ignoring parts that could lead to a path traversal attack.</p>
+<p>There are many payloads we can use, other than just typing <code>../</code>. For example, let&rsquo;s try URL encoding <code>%2e%2e%2fwebshell.php</code> (equal to ../webshell.php).
+As we can see now the response uploaded the file to <code>/avatars/../webshell.php</code>.</p>
+<p><img loading="lazy" src="lab13.png" alt="path"  />
+</p>
+<p>By opening the link we get a <code>Not Found</code> page. The URL is <code>web-security-academy.net/files/avatars/..%2fwebshell.php</code>, but if we remove <code>..%2f</code> then we will go to the path that we uploaded the file <code>web-security-academy.net/files/avatars/webshell.php</code>. It loads. Now let&rsquo;s see if the webshell works.</p>
+<p><code>web-security-academy.net/files/avatars/webshell.php?cmd=cat+/home/carlos/secret</code></p>
+<p>Sucess! We got the flag.</p>
 <hr>
 
 
