@@ -13,7 +13,9 @@
       <link>https://dimparar.github.io/thecybersecurityblog/docs/htb_cap/</link>
       <pubDate>Fri, 01 Nov 2024 22:59:51 +0200</pubDate>
       <guid>https://dimparar.github.io/thecybersecurityblog/docs/htb_cap/</guid>
-      <description></description>
+      <description>Let ip_address=10.10.10.10.
+Scan the machine with nmap.
+sudo nmap -sS -sV -sC -T4 -v -Pn 10.10.10.10 Host discovery disabled (-Pn). All addresses will be marked &amp;#39;up&amp;#39; and scan times may be slower. Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-11-01 14:55 EDT NSE: Loaded 156 scripts for scanning. NSE: Script Pre-scanning. Initiating NSE at 14:55 Completed NSE at 14:55, 0.00s elapsed Initiating NSE at 14:55 Completed NSE at 14:55, 0.00s elapsed Initiating NSE at 14:55 Completed NSE at 14:55, 0.</description>
     </item>
     <item>
       <title>PortSwigger Labs</title>
@@ -26,27 +28,11 @@ Password: peter
 After logging in, we get redirected to &amp;ldquo;My account&amp;rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server.</description>
     </item>
     <item>
-      <title>Resources</title>
-      <link>https://dimparar.github.io/thecybersecurityblog/docs/resources/</link>
-      <pubDate>Sun, 07 Apr 2024 23:40:09 +0300</pubDate>
-      <guid>https://dimparar.github.io/thecybersecurityblog/docs/resources/</guid>
-      <description>HTTPS Encryption &amp;amp; Remote Banking Authentication Attacks This article discusses the secure HTTPS Protocol intended for web-resources and its principles of operation as well as its strengths and weaknesses. It explains how attacks on HTTPS may lead to traffic being decrypted, particularly in systems for remote banking services and personal logins to web-resources.
-Web resources, such as remote banking services, web portals for private offices, e-mail, instant messaging and VoIP-telephony require protocols for secure data exchange.</description>
-    </item>
-    <item>
       <title>Crackmes.one Challenges</title>
       <link>https://dimparar.github.io/thecybersecurityblog/docs/crackmes-challenges/</link>
       <pubDate>Wed, 13 Mar 2024 22:10:50 +0200</pubDate>
       <guid>https://dimparar.github.io/thecybersecurityblog/docs/crackmes-challenges/</guid>
       <description> Challenge Difficulty Quality Link sporta778&#39;s Bobby 2.0 5.0 here </description>
-    </item>
-    <item>
-      <title>Hack a TP-Link Router by Flashback Team</title>
-      <link>https://dimparar.github.io/thecybersecurityblog/docs/tp-link-router-hack/</link>
-      <pubDate>Wed, 13 Mar 2024 22:10:50 +0200</pubDate>
-      <guid>https://dimparar.github.io/thecybersecurityblog/docs/tp-link-router-hack/</guid>
-      <description>Why do electrical sockets need a pin for &amp;ldquo;grounding&amp;rdquo;
-Search for debug interface (eg. UART) </description>
     </item>
     <item>
       <title>Bank CTF</title>
@@ -58,22 +44,6 @@ service apache2 start -&amp;gt; start apache2 server
 service apache2 stop -&amp;gt; stop apache2 server
 wget -&amp;gt; download files from internet
 Web Crawler A web crawler, or spider, is a type of bot that is typically operated by search engines like Google and Bing. Their purpose is to index the content of websites all across the Internet so that those websites can appear in search engine results</description>
-    </item>
-    <item>
-      <title>Easy Password Reverse by Clyax</title>
-      <link>https://dimparar.github.io/thecybersecurityblog/docs/crackmes_challenges_17_reverse_crack/</link>
-      <pubDate>Tue, 12 Mar 2024 15:02:14 +0200</pubDate>
-      <guid>https://dimparar.github.io/thecybersecurityblog/docs/crackmes_challenges_17_reverse_crack/</guid>
-      <description>Finding the Solution Walking through the exe in a dissassembler, we can find the main function.
-Near the end of the function you&amp;rsquo;ll see that the pass condition is a cmp [rsp+2C], edx. Lets keep this in mind as we disect the program.
-From the top, we can see what seems to be our username being stored into [rsp+30] from a call to fgets. This seems to be when we are prompted to enter our username.</description>
-    </item>
-    <item>
-      <title>Test</title>
-      <link>https://dimparar.github.io/thecybersecurityblog/docs/test/</link>
-      <pubDate>Mon, 11 Mar 2024 11:13:03 +0200</pubDate>
-      <guid>https://dimparar.github.io/thecybersecurityblog/docs/test/</guid>
-      <description>This is a test page. Lorem ipsum</description>
     </item>
   </channel>
 </rss>
