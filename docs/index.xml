@@ -6,8 +6,16 @@
     <description>Recent content in Docs on The Cyber Security Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Nov 2024 22:59:51 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 08 Nov 2024 13:43:52 +0200</lastBuildDate>
     <atom:link href="https://dimparar.github.io/thecybersecurityblog/docs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box: PermX</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/docs/htb_permx/</link>
+      <pubDate>Fri, 08 Nov 2024 13:43:52 +0200</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/docs/htb_permx/</guid>
+      <description>Let&amp;rsquo;s scan the machine with nmap.
+# Command sudo nmap -sS -sV -sC -v -T4 10.10.11.23 # Output PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 256 e2:5c:5d:8c:47:3e:d8:72:f7:b4:80:03:49:86:6d:ef (ECDSA) |_ 256 1f:41:02:8e:6b:17:18:9c:a0:ac:54:23:e9:71:30:17 (ED25519) 80/tcp open http Apache httpd 2.4.52 Let&amp;rsquo;s check the Http Server in browser. It seems then we try to access http://10.10.11.23:80/ we get redirected to http://permx.htb/, but the page doesn&amp;rsquo;t load.</description>
+    </item>
     <item>
       <title>Hack The Box: Cap</title>
       <link>https://dimparar.github.io/thecybersecurityblog/docs/htb_cap/</link>
