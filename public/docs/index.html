@@ -128,6 +128,19 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Hack The Box: PermX
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Let’s scan the machine with nmap.
+# Command sudo nmap -sS -sV -sC -v -T4 10.10.11.23 # Output PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 256 e2:5c:5d:8c:47:3e:d8:72:f7:b4:80:03:49:86:6d:ef (ECDSA) |_ 256 1f:41:02:8e:6b:17:18:9c:a0:ac:54:23:e9:71:30:17 (ED25519) 80/tcp open http Apache httpd 2.4.52 Let’s check the Http Server in browser. It seems then we try to access http://10.10.11.23:80/ we get redirected to http://permx.htb/, but the page doesn’t load....</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-08 13:43:52 +0200 EET'>08 Nov 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Hack The Box: PermX" href="http://localhost:1313/thecybersecurityblog/docs/htb_permx/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Hack The Box: Cap
     </h2>
   </header>

