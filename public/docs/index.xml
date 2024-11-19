@@ -6,15 +6,27 @@
     <description>Recent content in Docs on The Cyber Security Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Nov 2024 22:00:07 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 17 Nov 2024 19:49:44 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/thecybersecurityblog/docs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box: Instant</title>
+      <link>http://localhost:1313/thecybersecurityblog/docs/htb_instant/</link>
+      <pubDate>Sun, 17 Nov 2024 19:49:44 +0200</pubDate>
+      <guid>http://localhost:1313/thecybersecurityblog/docs/htb_instant/</guid>
+      <description>Let&amp;rsquo;s scan the machine with nmap.
+PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 256 31:83:eb:9f:15:f8:40:a5:04:9c:cb:3f:f6:ec:49:76 (ECDSA) |_ 256 6f:66:03:47:0e:8a:e0:03:97:67:5b:41:cf:e2:c7:c7 (ED25519) 80/tcp open http Apache httpd 2.4.58 | http-methods: |_ Supported Methods: GET HEAD POST OPTIONS |_http-server-header: Apache/2.4.58 (Ubuntu) |_http-title: Did not follow redirect to http://instant.htb/ Service Info: Host: instant.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel We have an Http Server running at port 80.</description>
+    </item>
     <item>
       <title>Bug Bounty Useful Resources</title>
       <link>http://localhost:1313/thecybersecurityblog/docs/bug_bounty_useful_resources/</link>
       <pubDate>Sat, 09 Nov 2024 22:00:07 +0200</pubDate>
       <guid>http://localhost:1313/thecybersecurityblog/docs/bug_bounty_useful_resources/</guid>
-      <description>
-Practical Examples Uber Bug Bounty: Turning Self-XSS into Good-XSS by fin1te </description>
+      <description>Practical Examples Uber Bug Bounty: Turning Self-XSS into Good-XSS by fin1te
+Uber XSS via Cookie by zhchbin
+Using XAMPP and Burp Intruder when scanning for subdomains to look for interesting behaviour &amp;amp; code
+My Notes on Hacking APIs from Bug Bounty Bootcamp
+Attacking APIs by tainting data in weird places
+Hacking Swagger-UI - from XSS to account takeovers</description>
     </item>
     <item>
       <title>Hack The Box: PermX</title>

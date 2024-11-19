@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/thecybersecurityblog/docs/bug_bounty_useful_resources/</loc>
-    <lastmod>2024-11-09T22:00:07+02:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/thecybersecurityblog/docs/</loc>
-    <lastmod>2024-11-09T22:00:07+02:00</lastmod>
+    <lastmod>2024-11-17T19:49:44+02:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/thecybersecurityblog/docs/htb_instant/</loc>
+    <lastmod>2024-11-17T19:49:44+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/thecybersecurityblog/</loc>
+    <lastmod>2024-11-17T19:49:44+02:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/thecybersecurityblog/docs/bug_bounty_useful_resources/</loc>
     <lastmod>2024-11-09T22:00:07+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/thecybersecurityblog/docs/htb_permx/</loc>
