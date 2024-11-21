@@ -6,8 +6,17 @@
     <description>Recent content in Docs on The Cyber Security Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 Nov 2024 19:49:44 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 21 Nov 2024 18:17:06 +0200</lastBuildDate>
     <atom:link href="https://dimparar.github.io/thecybersecurityblog/docs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box: GreenHorn</title>
+      <link>https://dimparar.github.io/thecybersecurityblog/docs/htb_greenhorn/</link>
+      <pubDate>Thu, 21 Nov 2024 18:17:06 +0200</pubDate>
+      <guid>https://dimparar.github.io/thecybersecurityblog/docs/htb_greenhorn/</guid>
+      <description>Let&amp;rsquo;s scan with nmap.
+PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0) 80/tcp open http nginx 1.18.0 (Ubuntu) 3000/tcp open ppp? Modify the /etc/hosts file by adding 10.10.11.25 greenhorn.htb so the browser can skip the DNS resoltion. Now we can access the domain.
+As we can see, there is an http service running at port 80 and an undefined service running at port 3000.</description>
+    </item>
     <item>
       <title>Hack The Box: Instant</title>
       <link>https://dimparar.github.io/thecybersecurityblog/docs/htb_instant/</link>
