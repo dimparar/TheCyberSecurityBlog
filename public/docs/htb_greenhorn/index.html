@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/thecybersecurityblog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=thecybersecurityblog/livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Hack The Box: GreenHorn | The Cyber Security Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Let&rsquo;s scan with nmap.
+PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0) 80/tcp open http nginx 1.18.0 (Ubuntu) 3000/tcp open ppp? Modify the /etc/hosts file by adding 10.10.11.25 greenhorn.htb so the browser can skip the DNS resoltion. Now we can access the domain.
+As we can see, there is an http service running at port 80 and an undefined service running at port 3000.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/thecybersecurityblog/docs/htb_greenhorn/">
+<link crossorigin="anonymous" href="/thecybersecurityblog/assets/css/stylesheet.79112176b8c2cef599ca604236706c81a7be13fe98e3c4f69d839f5f91e6a942.css" integrity="sha256-eREhdrjCzvWZymBCNnBsgae&#43;E/6Y48T2nYOfX5HmqUI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/thecybersecurityblog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/thecybersecurityblog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/thecybersecurityblog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/thecybersecurityblog/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/thecybersecurityblog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/thecybersecurityblog/docs/htb_greenhorn/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+    <nav class="nav">
+        <div class="head-class">
+            <div class="logo">
+                <a href="http://localhost:1313/thecybersecurityblog/" accesskey="h" title="The Cyber Security Blog (Alt + H)">The Cyber Security Blog</a>
+                
+            </div>
+            <ul id="menu">
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/" title="Home">
+                        <span>Home</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/blog/" title="Blog">
+                        <span>Blog</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/tags/" title="Tags">
+                        <span>Tags</span>
+                    </a>
+                </li>
+                
+                    <li>|</li>
+                
+                <li>
+                    <a href="http://localhost:1313/thecybersecurityblog/about/" title="About">
+                        <span>About</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Hack The Box: GreenHorn
+    </h1>
+    <div class="post-meta"><span title='2024-11-21 18:17:06 +0200 EET'>21 Nov 2024</span>
+
+</div>
+  </header>
+  <div class="card-list" onclick="location.href='https:\/\/www.hackthebox.com\/achievement\/machine\/2124852\/617';" style="cursor: pointer;">
+    <article class="card">
+      <figure class="card-image">
+        <img class=card-image src="greenhorn_cert.png" alt="Cert" />
+      </figure>
+      <div class="card-header">
+        <a href="https://www.hackthebox.com/achievement/machine/2124852/617">Owned Greenhorn from Hack The Box</a>
+      </div>
+      <div class="card-content">
+         I have just gained ownership of Greenhorn machine from Hack The Box
+      </div>
+      <div class="card-footer">
+        Hack The Box
+      </div>
+    </article>
+  </div> 
+  <div class="post-content"><p>Let&rsquo;s scan with nmap.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PORT     STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp   open  http    nginx 1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>3000/tcp open  ppp?
+</span></span></code></pre></div><p>Modify the <code>/etc/hosts</code> file by adding <code>10.10.11.25 greenhorn.htb</code> so the browser can skip the DNS resoltion. Now we can access the domain.</p>
+<p>As we can see, there is an http service running at port 80 and an undefined service running at port 3000. Let&rsquo;s start with the http server.</p>
+<p><img loading="lazy" src="lab1.png" alt="alt"  />
+</p>
+<p>Proceed to enumerate web directories with <code>ffuf</code>. By executing <code>ffuf -u http://greenhorn:80/FUZZ -w &lt;wordlist&gt;</code> we get a lot of responses with <code>status code 302 (redirected)</code>, so let&rsquo;s add <code>-r</code> to follow redirects. Then the most responses have <code>length 2245</code>. It seems that if the directory doesn&rsquo;t exist, we get redirected to the home page, so add <code>-fs 2245</code> to filter those.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Enumerate directories</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># use -r flag to follow redirects</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># use -fs 2245 to filter responses with length 2245</span>
+</span></span><span style="display:flex;"><span>ffuf -u http://greenhorn:80/FUZZ -w /usr/share/wordlists/dirb/common.txt -r -fs <span style="color:#ae81ff">2445</span>
+</span></span></code></pre></div><p><img loading="lazy" src="lab2.png" alt="alt"  />
+</p>
+<p>We got an <code>admin.php</code> page that redirects us to <code>login.php</code>, but we do not have the password yet.</p>
+<p><img loading="lazy" src="lab11.png" alt="alt"  />
+</p>
+<p>The applcation running is Pluck, a small and simple content management system, written in php. By searching <code>pluck 4.7.18 exploit site:github.com</code> we get <a href="https://github.com/Rai2en/CVE-2023-50564_Pluck-v4.7.18_PoC">CVE-2023-50564 (PoC)</a>. Unfortunately, the exploit requires login credentials to work.</p>
+<p>Let&rsquo;s try the service at port 3000.</p>
+<p><img loading="lazy" src="lab3.png" alt="alt"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ffuf -u http://greenhorn:3000/FUZZ -w /usr/share/wordlists/dirb/common.txt -r
+</span></span></code></pre></div><p><img loading="lazy" src="lab4.png" alt="alt"  />
+</p>
+<p>By checking <code>sitemap.xml</code>, we found <code>http://greenhorn.htb:3000/explore/repos/sitemap-1.xml</code>.
+<br></p>
+<p><code>http://greenhorn.htb:3000/sitemap.xml</code>:
+<img loading="lazy" src="lab5.png" alt="alt"  />
+
+<br></p>
+<p><code>http://greenhorn.htb:3000/explore/repos/sitemap-1.xml</code>:
+<img loading="lazy" src="lab6.png" alt="alt"  />
+
+<br></p>
+<p>Let&rsquo;s check this repository <code>GreenAdmin/GreenHorn</code></p>
+<p><img loading="lazy" src="lab6.png" alt="alt"  />
+</p>
+<p><img loading="lazy" src="lab7.png" alt="alt"  />
+
+<img loading="lazy" src="lab8.png" alt="alt"  />
+</p>
+<p>As we can see the password check for the login is done by a hash function that is taking as parameters the type of encryption, <code>sha512</code> and the varible, <code>$cont1</code>.</p>
+<p>By searching the repository files we can also find the password hash at <code>data/settings/pass.php</code> file.</p>
+<p><img loading="lazy" src="lab9.png" alt="alt"  />
+</p>
+<p>We know the hash and the encryption method, so we can decrypt it now.</p>
+<p><img loading="lazy" src="lab10.png" alt="alt"  />
+</p>
+<p>Use this password at <code>http://greenhorn:80/login.php</code>.</p>
+<p>Great it works, so now we can use the exploit we found before.
+By following the <code>README</code> instructions, we created the <code>payload.zip</code> file with the payload.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nc -lnvp <span style="color:#ae81ff">6464</span> <span style="color:#75715e"># Start a listener</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>python3 ./exploit.py <span style="color:#75715e"># Run the script and enter the .zip file path when prompted</span>
+</span></span></code></pre></div><p>Nice, we got the reverse shell. But still, we are <code>www-data</code> user and the shell is unstable. We need escalate our previleges to a user and then to root.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export TERM<span style="color:#f92672">=</span>xterm <span style="color:#75715e"># can use commands like clear now</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>python3 -c <span style="color:#e6db74">&#39;import pty;pty.spawn(&#34;/bin/bash&#34;)&#39;</span> <span style="color:#75715e"># to spawn a bash shell</span>
+</span></span></code></pre></div><p>Let&rsquo;s by checking the users with <code>cat /etc/passwd | grep home</code>. We got a user named <code>junior</code>. Maybe the password works for him too, <code>su junior</code>. We got a foothold!
+<img loading="lazy" src="lab12.png" alt="alt"  />
+</p>
+<p>Now let&rsquo;s go for the root. Checking basic things like <code>sudo -l</code>, <code>crontab</code> etc didn&rsquo;t lead anywhere, so let&rsquo;s transfer <code>/home/junior/Using OpenVAS.pdf</code> file to our machine in order to inpect it.</p>
+<p>By opening it with a Pdf Reader we can see a message by Mr. Green.
+<img loading="lazy" src="lab13.png" alt="alt"  />
+</p>
+<p>One way to find out the password is to use a tool called <a href="https://github.com/spipm/Depix">Depix</a>. To use this tool we need to give as a parameter the target <code>.png</code> and a search image. Unfortunately, if we take a screenshot of the pixelized password, the tool isn&rsquo;t working as expected.</p>
+<p>Notice that there is another tool, <code>tool_show_boxed</code>, that we can use to check if the our image is valid.</p>
+<p><img loading="lazy" src="lab14.png" alt="alt"  />
+</p>
+<p>Since taking a screenshot isn&rsquo;t working let&rsquo;s use an internet tool to extract images from pdf.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Check if the image is valid</span>
+</span></span><span style="display:flex;"><span>python3 ./tool_show_boxes.py -p extracted_image.png -s images/searchimages/debruinseq_notepad_Windows10_closeAndSpaced.png
+</span></span></code></pre></div><p><img loading="lazy" src="lab15.png" alt="alt"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Depixelize the image</span>
+</span></span><span style="display:flex;"><span>python3 ./depix.py -p extracted_image.png -s images/searchimages/debruinseq_notepad_Windows10_closeAndSpaced.png
+</span></span></code></pre></div><p><img loading="lazy" src="lab16.png" alt="alt"  />
+</p>
+<p>Now <code>su root</code>, type the password and &hellip; we are root.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/thecybersecurityblog/">The Cyber Security Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
