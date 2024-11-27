@@ -818,11 +818,12 @@
     }
 
     .toc {
-        margin: 0 2px 40px 2px;
+        max-width: 40em;
+        margin: 24px auto var(--content-gap) auto;
         border: 1px solid var(--border);
         background: var(--code-bg);
         border-radius: var(--radius);
-        padding: 0.4em;
+        padding: 2em;
     }
 
     .dark .toc {
@@ -850,6 +851,10 @@
 
     .toc li ul {
         margin-inline-start: var(--gap);
+    }
+
+    .toc li {
+        padding: .2em;
     }
 
     .toc summary:focus {
