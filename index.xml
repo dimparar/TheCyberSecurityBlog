@@ -59,10 +59,11 @@ sudo nmap -sS -sV -sC -T4 -v -Pn 10.10.10.10 Host discovery disabled (-Pn). All 
       <link>https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/</link>
       <pubDate>Tue, 29 Oct 2024 22:01:23 +0200</pubDate>
       <guid>https://dimparar.github.io/thecybersecurityblog/docs/portswigger_labs/</guid>
-      <description>Introduction Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
+      <description>Introduction This blog contains a series of writeups for PortSwigger Labs challenges, solved with and without using Burp Suite | 2024.
+File upload vulnerabilities Lab: Web shell upload via Content-Type restriction bypass In this lab we have to exploit an upload vulnerability.
 Go to &amp;ldquo;My account&amp;rdquo; and log in with the given credentials Username: wiener
 Password: peter
-After logging in, we get redirected to &amp;ldquo;My account&amp;rdquo; page where there is an input box to upload our Avatar photo. We want to check if there is any upload vulnerability we can exploit to get access to the server.</description>
+After logging in, we get redirected to &amp;ldquo;My account&amp;rdquo; page where there is an input box to upload our Avatar photo.</description>
     </item>
     <item>
       <title>Crackmes.one Challenges</title>
