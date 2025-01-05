@@ -6,8 +6,32 @@
     <description>Recent content on The Cyber Security Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 21 Nov 2024 18:17:06 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 16 Dec 2024 19:32:27 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/thecybersecurityblog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ntua Hack 3.0: Santas Lists</title>
+      <link>http://localhost:1313/thecybersecurityblog/docs/ntuah4ck_santaslists/</link>
+      <pubDate>Mon, 16 Dec 2024 19:32:27 +0200</pubDate>
+      <guid>http://localhost:1313/thecybersecurityblog/docs/ntuah4ck_santaslists/</guid>
+      <description>Github Repo with official writeups: NTUAH4CK-3.0 by Thread-in-the-Needle
+Description Can you manage to read Santa&amp;rsquo;s secret list? 🎅🎅🎅
+Tags: web
+Navigate to the website.
+There are two buttons, &amp;lsquo;Good List&amp;rsquo; and &amp;lsquo;Naughty List&amp;rsquo; that redirects us to /?list=good.php and /?list=naughty.php respectively.
+By the description we want to access the secret list which is probably somewhere in the server.
+Let&amp;rsquo;s inspect the server code that is provided along with the challenge description.</description>
+    </item>
+    <item>
+      <title>Ntua Hack 3.0: Lazy Admin</title>
+      <link>http://localhost:1313/thecybersecurityblog/docs/ntuah4ck_lazyadmin/</link>
+      <pubDate>Mon, 16 Dec 2024 18:41:26 +0200</pubDate>
+      <guid>http://localhost:1313/thecybersecurityblog/docs/ntuah4ck_lazyadmin/</guid>
+      <description>Github Repo with official writeups: NTUAH4CK-3.0 by Thread-in-the-Needle
+Description Admin doesn&amp;rsquo;t take security seriously when reviewing user messages. Can you exploit this? Flag format: NH4CK{a-g}
+Tags: web
+Navigate to the website and start by checking the /contact page. The description makes it obvious that something is vulnerable at the message area.
+When we send a dummy reguest we get a Request Successful message. We can&amp;rsquo;t see anything reflected to our end and probably the message is sent to the administrator to open and read.</description>
+    </item>
     <item>
       <title>Hack The Box: GreenHorn</title>
       <link>http://localhost:1313/thecybersecurityblog/docs/htb_greenhorn/</link>
@@ -35,7 +59,9 @@ Uber XSS via Cookie by zhchbin
 Using XAMPP and Burp Intruder when scanning for subdomains to look for interesting behaviour &amp;amp; code
 My Notes on Hacking APIs from Bug Bounty Bootcamp
 Attacking APIs by tainting data in weird places
-Hacking Swagger-UI - from XSS to account takeovers</description>
+Hacking Swagger-UI - from XSS to account takeovers
+HTTP desync account takeover
+How 100% Manual Hacking (Without Even Kali And Burp) Led To 2 Medium Vulnerabilities On YesWeHack</description>
     </item>
     <item>
       <title>Hack The Box: PermX</title>

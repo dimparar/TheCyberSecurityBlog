@@ -143,6 +143,8 @@ After logging in, we get redirected to &ldquo;My account&rdquo; page where there
     <li><a href="#path-traversal">Path traversal</a></li>
     <li><a href="#csrf">CSRF</a></li>
     <li><a href="#authentication">Authentication</a></li>
+    <li><a href="#cross-site-scripting-xss">Cross-site Scripting (XSS)</a></li>
+    <li><a href="#server-side-request-forfery-ssrf-vulnerabilities">Server-Side Request Forfery (SSRF) Vulnerabilities</a></li>
   </ul>
 </nav>
   </div> 
@@ -485,6 +487,167 @@ address to the server, the X-Forwarded-For request header is used.</p>
 <p>Let&rsquo;s see if we can fuzz the password with this username. Send the request of <code>/login</code> to Burp Intruder and configure it with a Sniper Type. Then provide the password wordlist.</p>
 <p>As expected, most of the responses have printed the message <code>You have made too many incorrect login attempts. Please try again in 1 minute(s).</code>, but there is one, with password <code>ashley</code> that doesn&rsquo;t print any message. This is our password.</p>
 <hr>
+<h3 id="lab-2fa-simple-bypass">Lab: 2FA simple bypass<a hidden class="anchor" aria-hidden="true" href="#lab-2fa-simple-bypass">#</a></h3>
+<p>We have available the victim&rsquo;s credentials, <code>carlos:montoya</code> so let&rsquo;s try them. When we enter the credentials at <code>login</code> page then we get redirected to page <code>login2</code>. Let&rsquo;s go to home page by modifying the url.</p>
+<p>It seems that we are logged in now, by going to my account page we are in carlos account. We bypassed the 2-Factor-Authentication cause it was not properly implemented. We were already in logged-in state when going to <code>login2</code> page so we were able to completely bypass it.</p>
+<hr>
+<h2 id="cross-site-scripting-xss">Cross-site Scripting (XSS)<a hidden class="anchor" aria-hidden="true" href="#cross-site-scripting-xss">#</a></h2>
+<h3 id="lab-reflected-xss-into-html-context-with-nothing-encoded">Lab: Reflected XSS into HTML context with nothing encoded<a hidden class="anchor" aria-hidden="true" href="#lab-reflected-xss-into-html-context-with-nothing-encoded">#</a></h3>
+<p>Navigate to the website and check every input point. The most classic functionality we should check first is the search box.</p>
+<p>Insert something like <code>abc'&quot;&gt;&lt;&gt;#;//--</code> in order to check if the server encodes some of the special characters.</p>
+<p><img loading="lazy" src="lab35.png" alt="alt"  />
+
+<img loading="lazy" src="lab36.png" alt="alt"  />
+</p>
+<p>We can also use Burp Proxy to intercept the request and send it to Repeater to analyze it along with its response. Before our payload we sould insert a string, like <code>abc</code>, as it would be much easier searching for it and subsequently finding the injection point (the context).
+<img loading="lazy" src="lab37.png" alt="alt"  />
+</p>
+<p>Now that we can see that our checking payload is reflected to the website without any encoding or protection, let&rsquo;s construct the real deal.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">alert</span>(document.<span style="color:#a6e22e">domain</span>)<span style="color:#f92672">&lt;</span><span style="color:#e6db74">/script&gt; /</span><span style="color:#f92672">/</span> <span style="color:#a6e22e">Context</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">inside</span> <span style="color:#a6e22e">h1</span> <span style="color:#a6e22e">tag</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Alternatives
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">abc</span><span style="color:#960050;background-color:#1e0010">&#39;&#34;</span><span style="color:#f92672">&gt;&lt;&gt;&lt;</span><span style="color:#a6e22e">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#a6e22e">onerror</span><span style="color:#f92672">=</span><span style="color:#a6e22e">alert</span>(document.<span style="color:#a6e22e">domain</span>)<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>We found the XSS vulnerability!</p>
+<hr>
+<h3 id="lab-stored-xss-into-html-context-with-nothing-encoded">Lab: Stored XSS into HTML context with nothing encoded<a hidden class="anchor" aria-hidden="true" href="#lab-stored-xss-into-html-context-with-nothing-encoded">#</a></h3>
+<p>Navigate to the website and to the <code>/post</code> page. We can see that there is a comment section. When we write a comment and all the information that are nessesary we intercept the request.</p>
+<p>We have a POST request to /post/comment with these parameters.</p>
+<p><img loading="lazy" src="lab39.png" alt="alt"  />
+</p>
+<p>If our comment is not sanitized we could enter a payload to to the comment parameter to achieve Stored-XSS. Let&rsquo;s give it a try.</p>
+<p><img loading="lazy" src="lab40.png" alt="alt"  />
+</p>
+<p>Great now everytime someone loads this page and consequently loads the comment section with or malicious payload, will get a javascript message with the domain. This could be used by a malicious actor to steal cookies sessions and more.</p>
+<p><img loading="lazy" src="lab38.png" alt="alt"  />
+</p>
+<hr>
+<h3 id="lab-dom-xss-in-documentwrite-sink-using-source-locationsearch">Lab: DOM XSS in document.write sink using source location.search<a hidden class="anchor" aria-hidden="true" href="#lab-dom-xss-in-documentwrite-sink-using-source-locationsearch">#</a></h3>
+<p>For this lab we will use a Burp Browser plugin, the DOM Invader. In this case it might be easy to detect the context of the injection in the javascript file, but in a more complicated website with minified js files it will be challenging and time consuming to do it manually.</p>
+<p>First make sure DOM Invader and Postmessage Interception is on.</p>
+<p><img loading="lazy" src="lab41.png" alt="alt"  />
+</p>
+<p>Then copy the canary and navigate to the website. Search all entry points by pasting the canary.</p>
+<p>First let&rsquo;s examine the search functionality. After searching a random string we can see a new parameter to the url, <code>/?search=test</code>.</p>
+<p>Now paste the canary to this parameter or the search bar and open Developer Tools with <code>F12</code>. We can see a new tab with the DOM Invader plugin.</p>
+<p><img loading="lazy" src="lab42.png" alt="alt"  />
+</p>
+<p>There is new message to DOM tab. If we click at the stack trace and go to the console tab we can see exactly the canary hit in the code.</p>
+<p><img loading="lazy" src="lab43.png" alt="alt"  />
+
+<img loading="lazy" src="lab45.png" alt="alt"  />
+
+<img loading="lazy" src="lab44.png" alt="alt"  />
+</p>
+<p>So now we know that our payload is injected here.
+<img loading="lazy" src="lab46.png" alt="alt"  />
+</p>
+<p>In order for our payload work we need to close first the <code>img</code> tag.</p>
+<p><img loading="lazy" src="lab47.png" alt="alt"  />
+</p>
+<p>We could also use something like <code>abc'&quot;&gt;&lt;&gt;&lt;img src=1 onerror=alert()&gt;</code>, which is essentailly the same thing but it is a payload that could work in many cases.</p>
+<hr>
+<h3 id="lab-dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element">Lab: DOM XSS in document.write sink using source location.search inside a select element<a hidden class="anchor" aria-hidden="true" href="#lab-dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element">#</a></h3>
+<p>Enable DOM Invader and navigate to the website. If we click to a product we can see that we are redirecting to something like <code>/product?productId=1</code>.</p>
+<p>Maybe the parameter <code>productId</code> is vulnerable to DOM XSS. Paste the canary, <code>/product?productId=&lt;paste_canary&gt;</code>. Before even using DOM Invader we get an error page that this is not a valid productId. Let&rsquo;s move on to the next entry point.</p>
+<p>In each product page there is a check availability option.</p>
+<p><img loading="lazy" src="lab48.png" alt="alt"  />
+</p>
+<p>Choose a random location from the given ones and click &ldquo;Check stock&rdquo;. We can see that we get redirected again to <code>/product</code> page. There is propably another request happening here so let&rsquo;s use Burp Proxy to intercept it and find out.</p>
+<p><img loading="lazy" src="lab49.png" alt="alt"  />
+</p>
+<p>We have a POST request to <code>/product/store</code> with parameters <code>productId</code> and <code>storeId</code>. Let&rsquo;s check the last one for DOM XSS.</p>
+<p>We got a hit at DOM tab.</p>
+<p><img loading="lazy" src="lab50.png" alt="alt"  />
+</p>
+<p>The injection is here:
+<img loading="lazy" src="lab51.png" alt="alt"  />
+</p>
+<p>If we close the two tags, <code>option</code> and <code>select</code>, maybe we can inject an <code>alert()</code> payload.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;/<span style="color:#f92672">option</span>&gt;&lt;/<span style="color:#f92672">select</span>&gt;&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span> <span style="color:#a6e22e">onerror</span><span style="color:#f92672">=</span><span style="color:#e6db74">alert()</span>&gt;
+</span></span></code></pre></div><p><img loading="lazy" src="lab52.png" alt="alt"  />
+</p>
+<p>Great we solved the lab!</p>
+<hr>
+<h3 id="lab-dom-xss-in-innerhtml-sink-using-source-locationsearch">Lab: DOM XSS in innerHTML sink using source location.search<a hidden class="anchor" aria-hidden="true" href="#lab-dom-xss-in-innerhtml-sink-using-source-locationsearch">#</a></h3>
+<p>Navigate to the website and test the search functionality, by pasting the canary to the <code>search</code> parameter.</p>
+<p>From DOM Invader we get that the injection is inside <code>innerHtml</code> attribute, which means that we tags like <code>&lt;script&gt;</code> and <code>&lt;svg&gt;</code> won&rsquo;t get executed.</p>
+<p><img loading="lazy" src="lab53.png" alt="alt"  />
+</p>
+<p><img loading="lazy" src="lab54.png" alt="alt"  />
+</p>
+<p>In this case we can use <code>&lt;img&gt;</code> tag, so the payload will be something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span> <span style="color:#a6e22e">onerror</span><span style="color:#f92672">=</span><span style="color:#e6db74">alert()</span>&gt;
+</span></span></code></pre></div><p>Great we got the alert!</p>
+<hr>
+<h3 id="lab-reflected-dom-xss">Lab: Reflected DOM XSS<a hidden class="anchor" aria-hidden="true" href="#lab-reflected-dom-xss">#</a></h3>
+<p>Navigate and to the website and enter a random string to the search bar.</p>
+<p>Intercept the requests with Burp Proxy. The first request returns the html page as a response.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /?search=test <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><p>While the second one returns a JSON object.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> search-results/?search=test <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><p>By using the DOM Invador plugin we also found that the injection point is inside an <code>eval()</code>, a JS function which parses a string as JS code.</p>
+<p><img loading="lazy" src="lab56.png" alt="alt"  />
+
+Essentially <code>this.responseText</code> is the JSON attribute <code>searchTerm</code> that is been taking the value of the URL <code>search</code> parameter.</p>
+<p><img loading="lazy" src="lab55.png" alt="alt"  />
+</p>
+<p>The key here is that by not using JSON library we don&rsquo;t parse <code>this.responseText</code> as JSON object, but as a string!!!</p>
+<p>That means that passing something like <code>&quot;-alert()</code> should do the job.</p>
+<p><img loading="lazy" src="lab57.png" alt="alt"  />
+</p>
+<p>Ok server escapes double quote (&quot;). Let&rsquo;s escape the escape character (/) and close the brackets so it is a valid object, then comment out the rest.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>\&#34;-alert()}//
+</span></span></code></pre></div><p><img loading="lazy" src="lab58.png" alt="alt"  />
+</p>
+<p>Great! Again this works because <code>eval()</code> parses the response as string and not as JSON, it is critical to know that JSON attributes cannot take expressions as values, like the payload we provided here in this case.</p>
+<hr>
+<!-- ### Lab: Stored DOM XSS -->
+<h2 id="server-side-request-forfery-ssrf-vulnerabilities">Server-Side Request Forfery (SSRF) Vulnerabilities<a hidden class="anchor" aria-hidden="true" href="#server-side-request-forfery-ssrf-vulnerabilities">#</a></h2>
+<h3 id="lab-basic-ssrf-against-the-local-server">Lab: Basic SSRF against the local server<a hidden class="anchor" aria-hidden="true" href="#lab-basic-ssrf-against-the-local-server">#</a></h3>
+<p>Navigate to a product page, like <code>/product?productId=1</code>. Then go to Check Stock and itercept the request with Burp.</p>
+<p><img loading="lazy" src="lab59.png" alt="alt"  />
+</p>
+<p>The server is using the front-end HTTP request parameter <code>stcokApi</code> to do an internal request to an API.</p>
+<p>Let&rsquo;s try to change the <code>stcokApi</code> parameter to something like <code>http://localhost/admin</code>. The server most of the times has different restrictions if the request comes from localhost and since this parameter is probably used to the server code to make an http request to the api, the localhost will be resolved and hence will return the admin panel to us.</p>
+<p><img loading="lazy" src="lab60.png" alt="alt"  />
+</p>
+<p>Indeed we got the admin page and we can see and delete any user&rsquo;s account. But we cannot delete through the browser as we have no access. We need to specify the correct path and modify the <code>stockApi</code> accordingly.</p>
+<p>After clicking to <code>carlos - Delete</code> we can see that the path we are hitting is <code>delete?username=carlos</code>.</p>
+<p>So the request to exploit this SSRF vulnerability should be:</p>
+<p><img loading="lazy" src="lab61.png" alt="alt"  />
+</p>
+<hr>
+<h3 id="lab-basic-ssrf-against-another-back-end-system">Lab: Basic SSRF against another back-end system<a hidden class="anchor" aria-hidden="true" href="#lab-basic-ssrf-against-another-back-end-system">#</a></h3>
+<p>Navigate to a product&rsquo;s page, like <code>/product?productId=1</code>. We know that there is an admin interface in <code>192.168.0.x:8080</code>.</p>
+<p>So let&rsquo;s intercept the request when pressing <code>Check Stock</code>.</p>
+<p><img loading="lazy" src="lab62.png" alt="alt"  />
+</p>
+<p>Send that to Intruder. Select Sniper as Attack type and mark the last digit of the IP address as the target.</p>
+<p><img loading="lazy" src="lab63.png" alt="alt"  />
+</p>
+<p>At &ldquo;Payloads&rdquo; tab, select as &ldquo;Payload type&rdquo; Numbers and type from 0 to 255. Start the attack.</p>
+<p><img loading="lazy" src="lab64.png" alt="alt"  />
+</p>
+<p>Ok the payload for <code>192.168.0.188:8080</code> has bigger length from the others, meaning that it could load the actual admin panel.</p>
+<p>Great we can see the admin panel and some users. Let&rsquo;s use the endpoint to delete user <code>carlos</code> and solve the lab.</p>
+<p><img loading="lazy" src="lab65.png" alt="alt"  />
+</p>
+<p><img loading="lazy" src="lab66.png" alt="alt"  />
+</p>
+<hr>
+<h3 id="lab-ssrf-with-blacklist-based-input-filter">Lab: SSRF with blacklist-based input filter<a hidden class="anchor" aria-hidden="true" href="#lab-ssrf-with-blacklist-based-input-filter">#</a></h3>
+<p>Navigate to a product&rsquo;s page, like <code>/product?productId=1</code>. We know that there is an admin interface at <code>http://localhost/admin</code>, but there is blacklist-based input filtering.</p>
+<p>Intercept the request when pressing the &ldquo;Check Stock&rdquo; button. Let&rsquo;s try different payloads for <code>stockApi</code> parameter.</p>
+<p>For <code>stockApi=http://127.0.0.1/admin</code> we get a <code>400 Bad request</code> with a message indicating that the request was blocked for security reasons.</p>
+<p><img loading="lazy" src="lab68.png" alt="alt"  />
+</p>
+<p>If we try a random IP address with no <code>/admin</code>, <code>http://192.198.4.3</code> we get <code>200 OK</code> with a message <code>Could not connect to external stock check service</code>. This means that it is accepted, so the strings <code>localhost</code> and <code>127.0.0.1</code> are in the blacklist.</p>
+<p>But what if we use different representation of them, like <code>127.1</code> for <code>127.0.0.1</code>.</p>
+<p>SImilarly the <code>admin</code> string is blocked so let&rsquo;s type it like <code>admiN</code> or <code>ADMIN</code>.</p>
+<p><img loading="lazy" src="lab67.png" alt="alt"  />
+</p>
+<p>The final payload is <code>http://127.1/admiN/delete?username=carlos</code>, which will delete the user <code>carlos</code>.</p>
+<hr>
 
 
   </div>
@@ -497,7 +660,7 @@ address to the server, the X-Forwarded-For request header is used.</p>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://localhost:1313/thecybersecurityblog/">The Cyber Security Blog</a></span>
+    <span>&copy; 2025 <a href="http://localhost:1313/thecybersecurityblog/">The Cyber Security Blog</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

@@ -19,3 +19,14 @@ showpage =true
 - [Attacking APIs by tainting data in weird places](https://danaepp.com/attacking-apis-by-tainting-data-in-weird-places)
 
 - [Hacking Swagger-UI - from XSS to account takeovers](https://blog.vidocsecurity.com/blog/hacking-swagger-ui-from-xss-to-account-takeovers/)
+
+- [HTTP desync account takeover](https://hipotermia.pw/bb/http-desync-account-takeover)
+
+- [How 100% Manual Hacking (Without Even Kali And Burp) Led To 2 Medium Vulnerabilities On YesWeHack](https://medium.com/@manan_sanghvi/how-100-manual-hacking-without-even-kali-and-burp-led-to-2-medium-vulnerabilities-on-yeswehack-bbda00fcd84e)
+
+- [How did I get 200$ with WordPress vulnerability!!!](https://medium.com/@nguhuynh.148/how-did-i-get-200-with-wordpress-vulnerability-4ce80f106709)
+
+
+### Training
+
+- [Google XSS Game](https://xss-game.appspot.com)

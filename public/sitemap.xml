@@ -3,12 +3,18 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/thecybersecurityblog/docs/</loc>
-    <lastmod>2024-11-21T18:17:06+02:00</lastmod>
+    <lastmod>2024-12-16T19:32:27+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/thecybersecurityblog/docs/htb_greenhorn/</loc>
-    <lastmod>2024-11-21T18:17:06+02:00</lastmod>
+    <loc>http://localhost:1313/thecybersecurityblog/docs/ntuah4ck_santaslists/</loc>
+    <lastmod>2024-12-16T19:32:27+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/thecybersecurityblog/</loc>
+    <lastmod>2024-12-16T19:32:27+02:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/thecybersecurityblog/docs/ntuah4ck_lazyadmin/</loc>
+    <lastmod>2024-12-16T18:41:26+02:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/thecybersecurityblog/docs/htb_greenhorn/</loc>
     <lastmod>2024-11-21T18:17:06+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/thecybersecurityblog/docs/htb_instant/</loc>

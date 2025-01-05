@@ -495,4 +495,257 @@ As expected, most of the responses have printed the message `You have made too m
 
 ___
 
+### Lab: 2FA simple bypass
+
+We have available the victim's credentials, `carlos:montoya` so let's try them. When we enter the credentials at `login` page then we get redirected to page `login2`. Let's go to home page by modifying the url.
+
+It seems that we are logged in now, by going to my account page we are in carlos account. We bypassed the 2-Factor-Authentication cause it was not properly implemented. We were already in logged-in state when going to `login2` page so we were able to completely bypass it.
+
+___
+
+## Cross-site Scripting (XSS)
+
+### Lab: Reflected XSS into HTML context with nothing encoded
+
+Navigate to the website and check every input point. The most classic functionality we should check first is the search box.
+
+Insert something like `abc'"><>#;//--` in order to check if the server encodes some of the special characters.
+
+![alt](lab35.png)
+![alt](lab36.png)
+
+We can also use Burp Proxy to intercept the request and send it to Repeater to analyze it along with its response. Before our payload we sould insert a string, like `abc`, as it would be much easier searching for it and subsequently finding the injection point (the context).
+![alt](lab37.png)
+
+Now that we can see that our checking payload is reflected to the website without any encoding or protection, let's construct the real deal.
+
+```js
+<script>alert(document.domain)</script> // Context is inside h1 tag
+
+// Alternatives
+abc'"><><img src=1 onerror=alert(document.domain)>
+```
+
+We found the XSS vulnerability!
+
+___
+
+### Lab: Stored XSS into HTML context with nothing encoded
+
+Navigate to the website and to the `/post` page. We can see that there is a comment section. When we write a comment and all the information that are nessesary we intercept the request.
+
+We have a POST request to /post/comment with these parameters.
+
+![alt](lab39.png)
+
+If our comment is not sanitized we could enter a payload to to the comment parameter to achieve Stored-XSS. Let's give it a try.
+
+![alt](lab40.png)
+
+Great now everytime someone loads this page and consequently loads the comment section with or malicious payload, will get a javascript message with the domain. This could be used by a malicious actor to steal cookies sessions and more.
+
+![alt](lab38.png)
+
+___
+
+### Lab: DOM XSS in document.write sink using source location.search
+
+For this lab we will use a Burp Browser plugin, the DOM Invader. In this case it might be easy to detect the context of the injection in the javascript file, but in a more complicated website with minified js files it will be challenging and time consuming to do it manually.
+
+First make sure DOM Invader and Postmessage Interception is on.
+
+![alt](lab41.png)
+
+Then copy the canary and navigate to the website. Search all entry points by pasting the canary.
+
+First let's examine the search functionality. After searching a random string we can see a new parameter to the url, `/?search=test`.
+
+Now paste the canary to this parameter or the search bar and open Developer Tools with `F12`. We can see a new tab with the DOM Invader plugin. 
+
+![alt](lab42.png)
+
+There is new message to DOM tab. If we click at the stack trace and go to the console tab we can see exactly the canary hit in the code.
+
+![alt](lab43.png)
+![alt](lab45.png)
+![alt](lab44.png)
+
+So now we know that our payload is injected here.
+![alt](lab46.png)
+
+In order for our payload work we need to close first the `img` tag.
+
+![alt](lab47.png)
+
+We could also use something like `abc'"><><img src=1 onerror=alert()>`, which is essentailly the same thing but it is a payload that could work in many cases.
+
+___
+
+### Lab: DOM XSS in document.write sink using source location.search inside a select element
+
+Enable DOM Invader and navigate to the website. If we click to a product we can see that we are redirecting to something like `/product?productId=1`.
+
+Maybe the parameter `productId` is vulnerable to DOM XSS. Paste the canary, `/product?productId=<paste_canary>`. Before even using DOM Invader we get an error page that this is not a valid productId. Let's move on to the next entry point.
+
+In each product page there is a check availability option.
+
+![alt](lab48.png)
+
+Choose a random location from the given ones and click "Check stock". We can see that we get redirected again to `/product` page. There is propably another request happening here so let's use Burp Proxy to intercept it and find out.
+
+![alt](lab49.png)
+
+We have a POST request to `/product/store` with parameters `productId` and `storeId`. Let's check the last one for DOM XSS.
+
+We got a hit at DOM tab.
+
+![alt](lab50.png)
+
+The injection is here:
+![alt](lab51.png)
+
+If we close the two tags, `option` and `select`, maybe we can inject an `alert()` payload.
+
+```html
+</option></select><img src=1 onerror=alert()>
+```
+
+![alt](lab52.png)
+
+Great we solved the lab!
+
+___
+
+### Lab: DOM XSS in innerHTML sink using source location.search
+
+Navigate to the website and test the search functionality, by pasting the canary to the `search` parameter.
+
+From DOM Invader we get that the injection is inside `innerHtml` attribute, which means that we tags like `<script>` and `<svg>` won't get executed.
+
+![alt](lab53.png)
+
+![alt](lab54.png)
+
+In this case we can use `<img>` tag, so the payload will be something like this:
+```html
+<img src=1 onerror=alert()>
+```
+
+Great we got the alert!
+
+___
+
+### Lab: Reflected DOM XSS
+
+Navigate and to the website and enter a random string to the search bar.
+
+Intercept the requests with Burp Proxy. The first request returns the html page as a response.
+```http
+GET /?search=test HTTP/2
+```
+
+While the second one returns a JSON object.
+```http
+GET search-results/?search=test HTTP/2
+```
+
+
+By using the DOM Invador plugin we also found that the injection point is inside an `eval()`, a JS function which parses a string as JS code.
+
+![alt](lab56.png)
+Essentially `this.responseText` is the JSON attribute `searchTerm` that is been taking the value of the URL `search` parameter.
+
+![alt](lab55.png)
+
+The key here is that by not using JSON library we don't parse `this.responseText` as JSON object, but as a string!!!
+
+That means that passing something like `"-alert()` should do the job.
+
+![alt](lab57.png)
+
+Ok server escapes double quote ("). Let's escape the escape character (/) and close the brackets so it is a valid object, then comment out the rest.
+```md
+\"-alert()}//
+```
+
+![alt](lab58.png)
+
+Great! Again this works because `eval()` parses the response as string and not as JSON, it is critical to know that JSON attributes cannot take expressions as values, like the payload we provided here in this case.
+
+___
+
+<!-- ### Lab: Stored DOM XSS -->
+
+
+## Server-Side Request Forfery (SSRF) Vulnerabilities
+
+### Lab: Basic SSRF against the local server
+
+Navigate to a product page, like `/product?productId=1`. Then go to Check Stock and itercept the request with Burp.
+
+![alt](lab59.png)
+
+The server is using the front-end HTTP request parameter `stcokApi` to do an internal request to an API.
+
+Let's try to change the `stcokApi` parameter to something like `http://localhost/admin`. The server most of the times has different restrictions if the request comes from localhost and since this parameter is probably used to the server code to make an http request to the api, the localhost will be resolved and hence will return the admin panel to us.
+
+![alt](lab60.png)
+
+Indeed we got the admin page and we can see and delete any user's account. But we cannot delete through the browser as we have no access. We need to specify the correct path and modify the `stockApi` accordingly. 
+
+After clicking to `carlos - Delete` we can see that the path we are hitting is `delete?username=carlos`.
+
+So the request to exploit this SSRF vulnerability should be:
+
+![alt](lab61.png)
+
+___
+
+### Lab: Basic SSRF against another back-end system
+
+Navigate to a product's page, like `/product?productId=1`. We know that there is an admin interface in `192.168.0.x:8080`.
+
+So let's intercept the request when pressing `Check Stock`.
+
+![alt](lab62.png)
+
+Send that to Intruder. Select Sniper as Attack type and mark the last digit of the IP address as the target.
+
+![alt](lab63.png)
+
+At "Payloads" tab, select as "Payload type" Numbers and type from 0 to 255. Start the attack.
+
+![alt](lab64.png)
+
+Ok the payload for `192.168.0.188:8080` has bigger length from the others, meaning that it could load the actual admin panel.
+
+Great we can see the admin panel and some users. Let's use the endpoint to delete user `carlos` and solve the lab.
+
+![alt](lab65.png)
+
+![alt](lab66.png)
+
+___
+
+### Lab: SSRF with blacklist-based input filter
+
+Navigate to a product's page, like `/product?productId=1`. We know that there is an admin interface at `http://localhost/admin`, but there is blacklist-based input filtering.
+
+Intercept the request when pressing the "Check Stock" button. Let's try different payloads for `stockApi` parameter.
+
+For `stockApi=http://127.0.0.1/admin` we get a `400 Bad request` with a message indicating that the request was blocked for security reasons.
+
+![alt](lab68.png)
+
+If we try a random IP address with no `/admin`, `http://192.198.4.3` we get `200 OK` with a message `Could not connect to external stock check service`. This means that it is accepted, so the strings `localhost` and `127.0.0.1` are in the blacklist.
+
+But what if we use different representation of them, like `127.1` for `127.0.0.1`.
+
+SImilarly the `admin` string is blocked so let's type it like `admiN` or `ADMIN`.
+
+![alt](lab67.png)
+
+The final payload is `http://127.1/admiN/delete?username=carlos`, which will delete the user `carlos`.
+
+___
 
